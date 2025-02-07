@@ -1,0 +1,1406 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum - Agriculture Information Hub</title>
+
+    <!-- Font Awesome CDN for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f2f1;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #004d40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        nav ul {
+            margin-top: 10px;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #c1e1c1;
+            font-size: 1.2rem;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav ul li a:hover {
+            color: #ffffff;
+            border-bottom: 2px solid #c1e1c1;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 40px 20px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02);
+        }
+
+        .card i {
+            font-size: 2rem;
+            color: #004d40;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.4rem;
+            color: #004d40;
+        }
+
+        .content-section {
+            display: none;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: #004d40;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            display: inline-block;
+            background: #004d40;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: #00332b;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #004d40;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+
+        footer a {
+            color: #c1e1c1;
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+        }
+          /* Style for the back button */
+        .back-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #c9302c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Community Forum</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="product.html">Product Details</a></li>
+                    <li><a href="marketplace.html">Marketplace</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- Main Options -->
+            <div id="options" class="card-container">
+                <div class="card" onclick="showSection('members')">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Members</h3>
+                </div>
+                <div class="card" onclick="showSection('discussions')">
+                    <i class="fas fa-comments"></i>
+                    <h3>Forum Discussions</h3>
+                </div>
+                <div class="card" onclick="showSection('crop-exchange')">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Crop Exchange</h3>
+                </div>
+                <div class="card" onclick="showSection('farm-tools')">
+                    <i class="fas fa-tools"></i>
+                    <h3>Farm Tools</h3>
+                </div>
+                <div class="card" onclick="showSection('faqs')">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>FAQs</h3>
+                </div>
+                <div class="card" onclick="showSection('testimonials')">
+                    <i class="fas fa-comment-dots"></i>
+                    <h3>User Testimonials</h3>
+                </div>
+                <div class="card" onclick="showSection('resources')">
+                    <i class="fas fa-book"></i>
+                    <h3>Farming Resources</h3>
+                </div>
+                <div class="card" onclick="showSection('solutions')">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Solutions for Farmers</h3>
+                </div>
+                <div class="card" onclick="showSection('updates')">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>Latest Updates</h3>
+                </div>
+                 <div class="card" onclick="showSection('events')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Upcoming Events</h3>
+                </div>
+            </div>
+
+            <section id="members" class="content-section">
+    <h2><i class="fas fa-user-tie"></i> Community Members</h2>
+
+    <!-- Member 1 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> John Doe - Expert in Organic Farming</h4>
+        <p><strong>Contact:</strong> johndoe@email.com | Phone: +1234567890</p>
+        <p><strong>Expertise:</strong> Organic crop cultivation, soil fertility improvement, eco-friendly practices.</p>
+        <p><strong>Success Story:</strong> John converted his family farm into an organic-certified one, increasing yield by 25% using compost and natural pest repellents.</p>
+        <p><strong>Availability:</strong> Available for consultations and workshops.</p>
+        <p><strong>Tip:</strong> "Incorporate compost and manure regularly to improve soil health, reduce chemical dependency, and boost yields naturally."</p>
+    </div>
+
+    <!-- Member 2 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Sarah Green - Specialist in Sustainable Farming</h4>
+        <p><strong>Contact:</strong> sarah.green@email.com | Phone: +1234567891</p>
+        <p><strong>Expertise:</strong> Crop rotation, water conservation, and renewable energy integration in farming.</p>
+        <p><strong>Success Story:</strong> Sarah introduced solar-powered irrigation systems to small farmers, reducing water usage by 30%.</p>
+        <p><strong>Availability:</strong> Open for collaborations and webinars.</p>
+        <p><strong>Tip:</strong> "Implement crop rotation and water-saving techniques to improve efficiency and sustainability in farming."</p>
+    </div>
+
+    <!-- Member 3 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Rajesh Kumar - Livestock Management Expert</h4>
+        <p><strong>Contact:</strong> rajesh.kumar@email.com | Phone: +1234567892</p>
+        <p><strong>Expertise:</strong> Dairy farming, poultry farming, and feed optimization.</p>
+        <p><strong>Success Story:</strong> Rajesh developed a low-cost feed formula that increased milk production in local farms.</p>
+        <p><strong>Availability:</strong> Available for field visits and training sessions.</p>
+        <p><strong>Tip:</strong> "Optimize livestock diets with balanced nutrition to increase productivity and reduce costs."</p>
+    </div>
+
+    <!-- Member 4 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Priya Sharma - Agritech Innovator</h4>
+        <p><strong>Contact:</strong> priya.sharma@email.com | Phone: +1234567893</p>
+        <p><strong>Expertise:</strong> Smart irrigation systems, AI-based crop monitoring, and technology integration in farming.</p>
+        <p><strong>Success Story:</strong> Priya helped farmers adopt drone technology to monitor crop health, reducing pesticide use by 40%.</p>
+        <p><strong>Availability:</strong> Open for tech consultations and workshops.</p>
+        <p><strong>Tip:</strong> "Adopt smart technologies like AI and IoT for precision farming and reduced resource wastage."</p>
+    </div>
+
+    <!-- Member 5 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Michael Smith - Expert in Aquaponics</h4>
+        <p><strong>Contact:</strong> michael.smith@email.com | Phone: +1234567894</p>
+        <p><strong>Expertise:</strong> Aquaponics system design, fish farming, and integrated crop-livestock management.</p>
+        <p><strong>Success Story:</strong> Michael designed a sustainable aquaponics system that doubled vegetable production and fish yield.</p>
+        <p><strong>Availability:</strong> Available for consultations and on-site training.</p>
+        <p><strong>Tip:</strong> "Combine fish farming with hydroponics to create a sustainable, self-sufficient food production system."</p>
+    </div>
+
+    <!-- Member 6 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Aisha Ahmed - Expert in Medicinal Herbs</h4>
+        <p><strong>Contact:</strong> aisha.ahmed@email.com | Phone: +1234567895</p>
+        <p><strong>Expertise:</strong> Cultivation of medicinal plants, organic herb farming, and herbal product development.</p>
+        <p><strong>Success Story:</strong> Aisha developed an herbal product line sourced from her farm, creating a sustainable income for local women.</p>
+        <p><strong>Availability:</strong> Open for product development collaborations.</p>
+        <p><strong>Tip:</strong> "Focus on niche markets like medicinal herbs for a high-value, low-volume farming approach."</p>
+    </div>
+
+    <!-- Member 7 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> David Johnson - Soil Scientist</h4>
+        <p><strong>Contact:</strong> david.johnson@email.com | Phone: +1234567896</p>
+        <p><strong>Expertise:</strong> Soil health analysis, erosion control, and nutrient management.</p>
+        <p><strong>Success Story:</strong> David introduced techniques that restored degraded soils, improving crop yields by 50% in affected areas.</p>
+        <p><strong>Availability:</strong> Available for soil testing and expert consultations.</p>
+        <p><strong>Tip:</strong> "Regular soil testing and organic matter addition can significantly enhance soil fertility and productivity."</p>
+    </div>
+
+    <!-- Member 8 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Meera Nair - Expert in Floriculture</h4>
+        <p><strong>Contact:</strong> meera.nair@email.com | Phone: +1234567897</p>
+        <p><strong>Expertise:</strong> Flower farming, greenhouse management, and export-quality floriculture.</p>
+        <p><strong>Success Story:</strong> Meera created a greenhouse setup that produced year-round flowers, boosting income for her community.</p>
+        <p><strong>Availability:</strong> Open for workshops and guidance sessions.</p>
+        <p><strong>Tip:</strong> "Invest in controlled environment farming for year-round high-quality flower production."</p>
+    </div>
+
+    <!-- Member 9 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Anil Patil - Expert in Grain Storage</h4>
+        <p><strong>Contact:</strong> anil.patil@email.com | Phone: +1234567898</p>
+        <p><strong>Expertise:</strong> Post-harvest grain management, warehouse optimization, and pest control.</p>
+        <p><strong>Success Story:</strong> Anil reduced post-harvest losses by 20% through innovative storage solutions.</p>
+        <p><strong>Availability:</strong> Available for consultation on storage techniques.</p>
+        <p><strong>Tip:</strong> "Implement advanced storage techniques to minimize losses and maintain grain quality."</p>
+    </div>
+
+    <!-- Member 10 -->
+    <div class="card">
+        <h4><i class="fas fa-user-circle"></i> Lakshmi Menon - Expert in Rural Farming</h4>
+        <p><strong>Contact:</strong> lakshmi.menon@email.com | Phone: +1234567899</p>
+        <p><strong>Expertise:</strong> Rural agricultural development, traditional farming methods, and community empowerment.</p>
+        <p><strong>Success Story:</strong> Lakshmi trained women in her village to adopt sustainable farming, increasing household incomes by 30%.</p>
+        <p><strong>Availability:</strong> Open for rural development programs and training.</p>
+        <p><strong>Tip:</strong> "Leverage traditional knowledge and sustainable methods for community-centered farming success."</p>
+    </div>
+
+
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+            <section id="discussions" class="content-section">
+                <h2><i class="fas fa-comments"></i> Forum Discussions</h2>
+                <div class="card">
+                    <h4><i class="fas fa-question-circle"></i> How to Increase Yield in Arid Regions?</h4>
+                    <p>Members are discussing strategies such as using drought-resistant crop varieties and improving soil moisture retention with organic mulch.</p>
+                </div>
+                <div class="card">
+        <h4><i class="fas fa-leaf"></i> Best Organic Fertilizers for Small Farms</h4>
+        <p>Explore the effectiveness of compost, manure, and biofertilizers for boosting soil fertility.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Modern Farm Equipment Pros and Cons</h4>
+        <p>Farmers weigh in on the benefits and challenges of using mechanized tools in agriculture.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-sun"></i> Solar-Powered Irrigation Systems</h4>
+        <p>Discussions on cost, efficiency, and implementation of solar-powered water pumps.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-apple-alt"></i> Best Practices for Orchard Management</h4>
+        <p>Share insights on pruning, pest control, and yield optimization for fruit orchards.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Starting a Sustainable Garden</h4>
+        <p>Tips for growing your own vegetables and fruits in an eco-friendly way.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Efficient Water Usage in Agriculture</h4>
+        <p>Learn about drip irrigation and other water-saving techniques.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-chart-line"></i> Market Trends for Organic Produce</h4>
+        <p>Analyze the latest trends and pricing for organic fruits and vegetables.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-people-arrows"></i> Collaborative Farming Models</h4>
+        <p>Discover how co-ops and shared resources can enhance productivity and community.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-warehouse"></i> Storage Solutions for Perishable Goods</h4>
+        <p>Discuss the best methods for keeping produce fresh after harvest.</p>
+    </div>
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+            <section id="crop-exchange" class="content-section">
+                <h2><i class="fas fa-exchange-alt"></i> Crop Exchange Platform</h2>
+                <div class="card">
+                    <h4><i class="fas fa-carrot"></i> Exchange Fresh Carrots for Potatoes</h4>
+                    <p>Looking to swap a surplus of freshly harvested carrots for a similar quantity of potatoes.</p>
+                </div>
+                <div class="card">
+        <h4><i class="fas fa-apple-alt"></i> Apples for Citrus Fruits</h4>
+        <p>Offer: Organic apples. Request: Oranges, lemons, or any other citrus fruit.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Spinach for Kale</h4>
+        <p>Trade your leafy greens! We have extra spinach and are looking for fresh kale.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-pepper-hot"></i> Swap Chili Peppers for Bell Peppers</h4>
+        <p>Offering homegrown chili peppers in exchange for sweet bell peppers.</p>
+    </div>
+    
+  <div class="card">
+        <h4><i class="fas fa-seedling"></i> Wheat for Rice</h4> <!-- Replaced wheat icon with seedling -->
+        <p>Need rice? Willing to trade bulk quantities of high-quality wheat.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-egg"></i> Eggs for Fresh Herbs</h4>
+        <p>Farm-fresh eggs available for exchange with basil, parsley, or mint.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Tea Leaves for Coffee Beans</h4>
+        <p>Freshly dried tea leaves available. Seeking high-grade coffee beans.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Corn for Soybeans</h4> <!-- Replaced corn icon with seedling -->
+        <p>Exchanging surplus maize for an equal amount of soybeans.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-kiwi-bird"></i> Kiwi Fruits for Grapes</h4>
+        <p>Abundant kiwi fruits available for swapping with fresh grapes.</p>
+    </div>
+    
+   <div class="card">
+        <h4><i class="fas fa-leaf"></i> Pumpkins for Zucchini</h4> <!-- Replaced pumpkin icon with leaf -->
+        <p>Offering large pumpkins in return for fresh zucchini.</p>
+    </div>
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+           <section id="farm-tools" class="content-section">
+    <h2><i class="fas fa-tools"></i> Farm Tools Marketplace</h2>
+
+    <!-- Tractor -->
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Tractors for Sale</h4>
+        <p><strong>Price:</strong> ₹22,50,000</p>
+        <p><strong>Purpose:</strong> Perfect for large-scale farming tasks, including plowing, tilling, and hauling materials.</p>
+        <p>High-quality tractors available, perfect for large-scale farming needs.</p>
+    </div>
+    
+    <!-- Heavy-Duty Shovels -->
+    <div class="card">
+        <h4><i class="fas fa-hand-rock"></i> Heavy-Duty Shovels</h4>
+        <p><strong>Price:</strong> ₹3,500</p>
+        <p><strong>Purpose:</strong> Designed for tough digging jobs, including planting, trenching, and moving soil.</p>
+        <p>Durable shovels available in various sizes for heavy-duty work.</p>
+    </div>
+    
+    <!-- Multi-Purpose Hammers -->
+    <div class="card">
+        <h4><i class="fas fa-hammer"></i> Multi-Purpose Hammers</h4>
+        <p><strong>Price:</strong> ₹1,500</p>
+        <p><strong>Purpose:</strong> Ideal for construction, repairs, and maintenance tasks on the farm.</p>
+        <p>Strong and reliable hammers for a variety of tasks including building and fixing equipment.</p>
+    </div>
+    
+    <!-- Adjustable Wrenches -->
+    <div class="card">
+        <h4><i class="fas fa-wrench"></i> Adjustable Wrenches</h4>
+        <p><strong>Price:</strong> ₹1,200</p>
+        <p><strong>Purpose:</strong> Useful for repairing farm equipment and making mechanical adjustments.</p>
+        <p>Essential wrenches for equipment repairs and mechanical maintenance.</p>
+    </div>
+    
+    <!-- Pesticide Sprayers -->
+    <div class="card">
+        <h4><i class="fas fa-spray-can"></i> Pesticide Sprayers</h4>
+        <p><strong>Price:</strong> ₹10,000</p>
+        <p><strong>Purpose:</strong> Used for applying pesticides and herbicides to crops to protect them from pests.</p>
+        <p>Efficient and easy-to-use pesticide sprayers for crop protection.</p>
+    </div>
+    
+    <!-- Irrigation Equipment -->
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Irrigation Equipment</h4>
+        <p><strong>Price:</strong> ₹15,000</p>
+        <p><strong>Purpose:</strong> Essential for managing water distribution and providing consistent irrigation to crops.</p>
+        <p>Find drip irrigation kits and water management systems for your farm.</p>
+    </div>
+    
+    <!-- Wheelbarrows -->
+    <div class="card">
+        <h4><i class="fas fa-dolly"></i> Wheelbarrows</h4>
+        <p><strong>Price:</strong> ₹5,000</p>
+        <p><strong>Purpose:</strong> Perfect for transporting soil, plants, and tools around the farm.</p>
+        <p>Lightweight yet sturdy wheelbarrows for easy transport of materials.</p>
+    </div>
+    
+    <!-- Pruning Shears -->
+    <div class="card">
+        <h4><i class="fas fa-cut"></i> Pruning Shears</h4>
+        <p><strong>Price:</strong> ₹2,000</p>
+        <p><strong>Purpose:</strong> Used for precision cutting and trimming of plants, shrubs, and trees to maintain healthy growth.</p>
+        <p>Precision cutting tools for pruning and maintaining crops and plants.</p>
+    </div>
+    
+    <!-- Electric Water Pumps -->
+    <div class="card">
+        <h4><i class="fas fa-plug"></i> Electric Water Pumps</h4>
+        <p><strong>Price:</strong> ₹12,000</p>
+        <p><strong>Purpose:</strong> Helps to efficiently pump water from wells, tanks, or other water sources for irrigation purposes.</p>
+        <p>Energy-efficient water pumps to optimize irrigation and water usage.</p>
+    </div>
+    
+    <!-- Soil Testing Kits -->
+    <div class="card">
+        <h4><i class="fas fa-ruler-combined"></i> Soil Testing Kits</h4>
+        <p><strong>Price:</strong> ₹3,500</p>
+        <p><strong>Purpose:</strong> Used to analyze soil composition, nutrient levels, and pH to optimize planting and improve crop yields.</p>
+        <p>Comprehensive kits to analyze soil composition and improve crop yields.</p>
+    </div>
+    
+    <!-- Tools for Sale Section -->
+    <h3><i class="fas fa-shopping-cart"></i> Tools for Sale</h3>
+
+    <!-- Tractor -->
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Tractors for Sale</h4>
+        <p><strong>Price:</strong> ₹22,50,000</p>
+        <p><strong>Purpose:</strong> Perfect for large-scale farming tasks, including plowing, tilling, and hauling materials.</p>
+        <p>High-quality tractors available, perfect for large-scale farming needs.</p>
+    </div>
+    
+    <!-- Heavy-Duty Shovels -->
+    <div class="card">
+        <h4><i class="fas fa-hand-rock"></i> Heavy-Duty Shovels</h4>
+        <p><strong>Price:</strong> ₹3,500</p>
+        <p><strong>Purpose:</strong> Designed for tough digging jobs, including planting, trenching, and moving soil.</p>
+        <p>Durable shovels available in various sizes for heavy-duty work.</p>
+    </div>
+    
+    <!-- Multi-Purpose Hammers -->
+    <div class="card">
+        <h4><i class="fas fa-hammer"></i> Multi-Purpose Hammers</h4>
+        <p><strong>Price:</strong> ₹1,500</p>
+        <p><strong>Purpose:</strong> Ideal for construction, repairs, and maintenance tasks on the farm.</p>
+        <p>Strong and reliable hammers for a variety of tasks including building and fixing equipment.</p>
+    </div>
+    
+    <!-- Adjustable Wrenches -->
+    <div class="card">
+        <h4><i class="fas fa-wrench"></i> Adjustable Wrenches</h4>
+        <p><strong>Price:</strong> ₹1,200</p>
+        <p><strong>Purpose:</strong> Useful for repairing farm equipment and making mechanical adjustments.</p>
+        <p>Essential wrenches for equipment repairs and mechanical maintenance.</p>
+    </div>
+    
+    <!-- Pesticide Sprayers -->
+    <div class="card">
+        <h4><i class="fas fa-spray-can"></i> Pesticide Sprayers</h4>
+        <p><strong>Price:</strong> ₹10,000</p>
+        <p><strong>Purpose:</strong> Used for applying pesticides and herbicides to crops to protect them from pests.</p>
+        <p>Efficient and easy-to-use pesticide sprayers for crop protection.</p>
+    </div>
+    
+    <!-- Irrigation Equipment -->
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Irrigation Equipment</h4>
+        <p><strong>Price:</strong> ₹15,000</p>
+        <p><strong>Purpose:</strong> Essential for managing water distribution and providing consistent irrigation to crops.</p>
+        <p>Find drip irrigation kits and water management systems for your farm.</p>
+    </div>
+    
+    <!-- Wheelbarrows -->
+    <div class="card">
+        <h4><i class="fas fa-dolly"></i> Wheelbarrows</h4>
+        <p><strong>Price:</strong> ₹5,000</p>
+        <p><strong>Purpose:</strong> Perfect for transporting soil, plants, and tools around the farm.</p>
+        <p>Lightweight yet sturdy wheelbarrows for easy transport of materials.</p>
+    </div>
+    
+    <!-- Pruning Shears -->
+    <div class="card">
+        <h4><i class="fas fa-cut"></i> Pruning Shears</h4>
+        <p><strong>Price:</strong> ₹2,000</p>
+        <p><strong>Purpose:</strong> Used for precision cutting and trimming of plants, shrubs, and trees to maintain healthy growth.</p>
+        <p>Precision cutting tools for pruning and maintaining crops and plants.</p>
+    </div>
+    
+    <!-- Electric Water Pumps -->
+    <div class="card">
+        <h4><i class="fas fa-plug"></i> Electric Water Pumps</h4>
+        <p><strong>Price:</strong> ₹12,000</p>
+        <p><strong>Purpose:</strong> Helps to efficiently pump water from wells, tanks, or other water sources for irrigation purposes.</p>
+        <p>Energy-efficient water pumps to optimize irrigation and water usage.</p>
+    </div>
+    
+    <!-- Soil Testing Kits -->
+    <div class="card">
+        <h4><i class="fas fa-ruler-combined"></i> Soil Testing Kits</h4>
+        <p><strong>Price:</strong> ₹3,500</p>
+        <p><strong>Purpose:</strong> Used to analyze soil composition, nutrient levels, and pH to optimize planting and improve crop yields.</p>
+        <p>Comprehensive kits to analyze soil composition and improve crop yields.</p>
+    </div>
+    
+    <!-- Tools for Rent Section -->
+    <h3><i class="fas fa-rent"></i> Tools for Rent</h3>
+
+    <!-- Rent Tractor -->
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Tractors for Rent</h4>
+        <p><strong>Price:</strong> ₹2,500/day</p>
+        <p><strong>Purpose:</strong> Rent a tractor for plowing, tilling, or hauling on your farm without the upfront cost.</p>
+        <p>Rent a high-quality tractor for your short-term farming needs.</p>
+    </div>
+
+    <!-- Rent Heavy-Duty Shovels -->
+    <div class="card">
+        <h4><i class="fas fa-hand-rock"></i> Heavy-Duty Shovels for Rent</h4>
+        <p><strong>Price:</strong> ₹100/day</p>
+        <p><strong>Purpose:</strong> Rent heavy-duty shovels for digging, trenching, and moving soil or materials.</p>
+        <p>Available for rent in various sizes for tough digging jobs.</p>
+    </div>
+
+    <!-- Rent Multi-Purpose Hammers -->
+    <div class="card">
+        <h4><i class="fas fa-hammer"></i> Multi-Purpose Hammers for Rent</h4>
+        <p><strong>Price:</strong> ₹50/day</p>
+        <p><strong>Purpose:</strong> Rent a multi-purpose hammer for construction and farm maintenance tasks.</p>
+        <p>Reliable and strong hammers available for rent.</p>
+    </div>
+
+    <!-- Rent Adjustable Wrenches -->
+    <div class="card">
+        <h4><i class="fas fa-wrench"></i> Adjustable Wrenches for Rent</h4>
+        <p><strong>Price:</strong> ₹30/day</p>
+        <p><strong>Purpose:</strong> Rent adjustable wrenches for farm equipment repairs or mechanical work.</p>
+        <p>Essential tools for equipment maintenance, available for rent.</p>
+    </div>
+
+    <!-- Rent Pesticide Sprayers -->
+    <div class="card">
+        <h4><i class="fas fa-spray-can"></i> Pesticide Sprayers for Rent</h4>
+        <p><strong>Price:</strong> ₹200/day</p>
+        <p><strong>Purpose:</strong> Rent pesticide sprayers for crop protection against pests and diseases.</p>
+        <p>Available for rent for applying pesticides and herbicides on your farm.</p>
+    </div>
+    
+    <!-- Rent Irrigation Equipment -->
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Irrigation Equipment for Rent</h4>
+        <p><strong>Price:</strong> ₹500/day</p>
+        <p><strong>Purpose:</strong> Rent irrigation systems for efficient water distribution on your farm.</p>
+        <p>Efficient irrigation equipment available for rent on a daily basis.</p>
+    </div>
+</section>
+
+    
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+            <section id="faqs" class="content-section">
+    <h2><i class="fas fa-question-circle"></i> FAQs</h2>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> What is organic farming?</h4>
+        <p>Organic farming involves growing crops without synthetic fertilizers and pesticides, focusing on sustainability and soil health.</p>
+        <ul>
+            <li><strong>Tip:</strong> Start with composting to naturally enhance soil quality.</li>
+            <li><strong>Feature:</strong> Access a checklist for transitioning to organic farming methods.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> What are sustainable farming practices?</h4>
+        <p>Sustainable farming practices include crop rotation, conservation tillage, and using natural pest control to maintain soil and environmental health.</p>
+        <ul>
+            <li><strong>Tip:</strong> Incorporate cover crops to enhance soil nutrients naturally.</li>
+            <li><strong>Feature:</strong> Explore video tutorials on sustainable farming techniques.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-sun"></i> How can farmers manage water efficiently?</h4>
+        <p>Farmers can adopt drip irrigation, rainwater harvesting, and soil moisture monitoring to optimize water usage.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use mulch to retain soil moisture and reduce evaporation.</li>
+            <li><strong>Feature:</strong> Free calculator for estimating water requirements based on crop type.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> What are cover crops?</h4>
+        <p>Cover crops are plants grown to protect and improve soil health, prevent erosion, and add nutrients back into the soil.</p>
+        <ul>
+            <li><strong>Tip:</strong> Try legumes as cover crops to naturally fix nitrogen in the soil.</li>
+            <li><strong>Feature:</strong> Access a guide on selecting the best cover crops for your region.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-bug"></i> How can farmers control pests naturally?</h4>
+        <p>Farmers can use methods like introducing beneficial insects, crop rotation, and neem oil to manage pests without chemicals.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use companion planting to naturally deter harmful pests.</li>
+            <li><strong>Feature:</strong> Visual pest control chart for quick reference.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> What are precision farming techniques?</h4>
+        <p>Precision farming uses technologies like GPS, sensors, and drones to optimize field-level management of crops and resources.</p>
+        <ul>
+            <li><strong>Tip:</strong> Start with a GPS-guided tractor to improve planting accuracy.</li>
+            <li><strong>Feature:</strong> Try a demo of drone-based crop health monitoring.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-recycle"></i> What is composting, and how is it beneficial?</h4>
+        <p>Composting is the process of converting organic waste into nutrient-rich fertilizer, which helps improve soil fertility and reduce waste.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use kitchen scraps and dry leaves to create a balanced compost pile.</li>
+            <li><strong>Feature:</strong> Step-by-step guide on building your own composting bin.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-cloud-sun"></i> How does climate change affect agriculture?</h4>
+        <p>Climate change impacts agriculture through unpredictable weather, droughts, and temperature changes, requiring adaptive farming techniques.</p>
+        <ul>
+            <li><strong>Tip:</strong> Diversify crops to reduce risks associated with weather changes.</li>
+            <li><strong>Feature:</strong> Download climate adaptation strategies tailored to your region.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> What is drip irrigation?</h4>
+        <p>Drip irrigation delivers water directly to plant roots in small, steady amounts, reducing water waste and improving efficiency.</p>
+        <ul>
+            <li><strong>Tip:</strong> Regularly check emitters for blockages to maintain efficiency.</li>
+            <li><strong>Feature:</strong> Interactive tool to design your own drip irrigation system.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> What is crop rotation?</h4>
+        <p>Crop rotation involves changing the type of crops grown in a particular field each season to prevent soil depletion and reduce pests.</p>
+        <ul>
+            <li><strong>Tip:</strong> Include deep-rooted crops in rotation to improve soil aeration.</li>
+            <li><strong>Feature:</strong> Seasonal crop rotation planner based on your soil type.</li>
+        </ul>
+    </div>
+
+
+    
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+            <section id="testimonials" class="content-section">
+    <h2><i class="fas fa-comment-dots"></i> User Testimonials</h2>
+    
+    <div class="card">
+        <h4><i class="fas fa-user"></i> Mary Johnson</h4>
+        <p>"Thanks to the community, I learned effective pest management techniques that saved my crops!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Explore natural pest control methods such as neem oil and beneficial insects.</li>
+            <li><strong>Idea:</strong> Start a pest control diary to track what methods work best for specific pests.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-user-friends"></i> John Doe</h4>
+        <p>"The information on sustainable farming helped me transition to organic farming with great results. My soil quality has improved significantly!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Use compost and green manure to improve soil organic matter.</li>
+            <li><strong>Idea:</strong> Create a soil health plan tailored to your crops and climate.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-users"></i> Sarah Lee</h4>
+        <p>"Joining this platform has been a game-changer! I found solutions to irrigation issues that have boosted my yield."</p>
+        <ul>
+            <li><strong>Tip:</strong> Regularly clean and inspect your irrigation equipment to prevent blockages.</li>
+            <li><strong>Idea:</strong> Install soil moisture sensors to optimize irrigation schedules.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-cogs"></i> Alex Martinez</h4>
+        <p>"The tips on farm machinery maintenance were invaluable. I learned how to repair my tractor and save on repair costs."</p>
+        <ul>
+            <li><strong>Tip:</strong> Keep a maintenance log for all your machinery to schedule timely check-ups.</li>
+            <li><strong>Idea:</strong> Use online tutorials or local workshops to learn basic machinery repair skills.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Emma Wright</h4>
+        <p>"I’m amazed at how quickly I was able to implement crop rotation and see positive results on my farm. Highly recommend this community!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Plan your crop rotation around soil nutrient needs and pest control strategies.</li>
+            <li><strong>Idea:</strong> Use an app to plan and track your crop rotation for maximum efficiency.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-cloud-sun"></i> David Harris</h4>
+        <p>"The weather forecast insights provided here helped me plan my planting schedule more effectively, saving time and resources."</p>
+        <ul>
+            <li><strong>Tip:</strong> Regularly monitor long-term weather forecasts for strategic farm planning.</li>
+            <li><strong>Idea:</strong> Automate weather data collection with a farm weather station.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Lucy Black</h4>
+        <p>"I learned how to use precision farming techniques to monitor soil moisture, and my crop yields have never been higher!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Utilize satellite imagery to monitor crop health and detect issues early.</li>
+            <li><strong>Idea:</strong> Experiment with variable rate technology (VRT) to optimize inputs like water and fertilizers.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Mark Wilson</h4>
+        <p>"The guides on organic fertilizers have helped me create a more sustainable farming system. My plants are thriving!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Use locally available organic materials, such as manure and plant residues, for fertilizer.</li>
+            <li><strong>Idea:</strong> Start a small-scale vermicomposting unit for a continuous supply of organic fertilizer.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-tachometer-alt"></i> Rachel Green</h4>
+        <p>"This community helped me implement efficient water management strategies, which significantly lowered my water consumption."</p>
+        <ul>
+            <li><strong>Tip:</strong> Reduce water evaporation by watering crops early in the morning or late in the evening.</li>
+            <li><strong>Idea:</strong> Invest in a water storage tank to harvest and reuse rainwater.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-briefcase"></i> Steven Taylor</h4>
+        <p>"The business advice I received here about selling produce directly to consumers helped me increase my profits substantially!"</p>
+        <ul>
+            <li><strong>Tip:</strong> Leverage social media platforms to reach local consumers directly.</li>
+            <li><strong>Idea:</strong> Explore setting up a subscription box service for fresh produce delivery.</li>
+        </ul>
+    </div>
+
+
+                <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+
+            <section id="resources" class="content-section">
+    <h2><i class="fas fa-book"></i> Farming Resources</h2>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Organic Farming Guide</h4>
+        <p>Learn the principles of organic farming, including soil health, pest management, and sustainable crop production.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use compost and green manure to enrich the soil naturally.</li>
+            <li><strong>New Idea:</strong> Integrate permaculture techniques for a more sustainable system.</li>
+            <li><strong>About:</strong> Comprehensive guide to transitioning to organic practices.</li>
+            <li><strong>Daily Update:</strong> Latest on certified organic fertilizers in your region.</li>
+            <li><strong>New Feature:</strong> Access interactive videos on soil management techniques.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-wrench"></i> Farm Machinery Maintenance</h4>
+        <p>Detailed instructions on how to maintain and repair various farm machinery, from tractors to plows.</p>
+        <ul>
+            <li><strong>Tip:</strong> Schedule regular checks to avoid costly repairs.</li>
+            <li><strong>New Idea:</strong> Use IoT devices to monitor machine health remotely.</li>
+            <li><strong>About:</strong> Helps increase the lifespan of your equipment.</li>
+            <li><strong>Daily Update:</strong> Insights on the best tools for minor machinery fixes.</li>
+            <li><strong>New Feature:</strong> Step-by-step video tutorials for specific machinery types.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-cogs"></i> Precision Farming Tools</h4>
+        <p>Resources on advanced tools for precision farming, including GPS systems, sensors, and drones to optimize crop production.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use drones to map your fields and monitor crop health.</li>
+            <li><strong>New Idea:</strong> Combine weather data with GPS systems for real-time adjustments.</li>
+            <li><strong>About:</strong> Enhance productivity and reduce resource waste.</li>
+            <li><strong>Daily Update:</strong> New software updates for precision farming tools.</li>
+            <li><strong>New Feature:</strong> Free trials for AI-integrated farming apps.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Efficient Water Management</h4>
+        <p>Guides on using irrigation systems efficiently, rainwater harvesting, and managing water resources on your farm.</p>
+        <ul>
+            <li><strong>Tip:</strong> Install drip irrigation for water conservation.</li>
+            <li><strong>New Idea:</strong> Use automated systems to control water distribution.</li>
+            <li><strong>About:</strong> Helps reduce water usage while improving crop growth.</li>
+            <li><strong>Daily Update:</strong> Techniques to improve water harvesting during dry spells.</li>
+            <li><strong>New Feature:</strong> Tools for calculating water needs by crop type.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Crop Rotation Plans</h4>
+        <p>Strategies and resources on implementing crop rotation to improve soil health, reduce pests, and increase yields.</p>
+        <ul>
+            <li><strong>Tip:</strong> Alternate between legumes and cereals for nitrogen enrichment.</li>
+            <li><strong>New Idea:</strong> Incorporate cover crops in your rotation cycle.</li>
+            <li><strong>About:</strong> Boosts long-term soil fertility and minimizes erosion.</li>
+            <li><strong>Daily Update:</strong> New research on optimal crop rotation patterns.</li>
+            <li><strong>New Feature:</strong> Interactive crop rotation planner tool.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Tractor Use & Maintenance</h4>
+        <p>A comprehensive guide on how to operate, maintain, and repair tractors and other large farming equipment.</p>
+        <ul>
+            <li><strong>Tip:</strong> Always check oil levels and tire pressure before use.</li>
+            <li><strong>New Idea:</strong> Switch to fuel-efficient or electric tractors for cost savings.</li>
+            <li><strong>About:</strong> Ensures optimal performance and safety of tractors.</li>
+            <li><strong>Daily Update:</strong> Tips on purchasing affordable spare parts.</li>
+            <li><strong>New Feature:</strong> Access a virtual tractor simulator for hands-on learning.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-bug"></i> Natural Pest Control</h4>
+        <p>Learn about natural pest control methods using beneficial insects, organic pesticides, and companion planting techniques.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use marigold plants to repel nematodes naturally.</li>
+            <li><strong>New Idea:</strong> Develop insectary strips to attract beneficial insects.</li>
+            <li><strong>About:</strong> Reduces dependency on chemical pesticides.</li>
+            <li><strong>Daily Update:</strong> Latest findings on eco-friendly pest control products.</li>
+            <li><strong>New Feature:</strong> Compatibility chart for companion planting.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-briefcase"></i> Agricultural Business Planning</h4>
+        <p>Resources to help you plan and grow your agricultural business, including marketing, budgeting, and financial strategies.</p>
+        <ul>
+            <li><strong>Tip:</strong> Diversify your income streams with value-added products.</li>
+            <li><strong>New Idea:</strong> Use blockchain for transparent farm-to-table supply chains.</li>
+            <li><strong>About:</strong> Guides farmers to enhance profitability and scalability.</li>
+            <li><strong>Daily Update:</strong> Current market trends for agricultural commodities.</li>
+            <li><strong>New Feature:</strong> Template for creating business plans specific to farming.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-calendar-alt"></i> Seasonal Farming Calendar</h4>
+        <p>A guide to understanding the best planting, harvesting, and maintenance times based on seasonal changes in your region.</p>
+        <ul>
+            <li><strong>Tip:</strong> Plan for successive planting to maximize yield in shorter seasons.</li>
+            <li><strong>New Idea:</strong> Incorporate AI weather forecasting into your planning.</li>
+            <li><strong>About:</strong> Helps align farming activities with environmental conditions.</li>
+            <li><strong>Daily Update:</strong> Alerts on upcoming seasonal trends and tips.</li>
+            <li><strong>New Feature:</strong> Regional customization for planting schedules.</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-users"></i> Farming Community Support</h4>
+        <p>Access a network of farmers to exchange tips, discuss challenges, and support one another in sustainable practices.</p>
+        <ul>
+            <li><strong>Tip:</strong> Join local farmer groups to share best practices and resources.</li>
+            <li><strong>New Idea:</strong> Create a community knowledge-sharing platform.</li>
+            <li><strong>About:</strong> Encourages collaboration and shared learning among farmers.</li>
+            <li><strong>Daily Update:</strong> Highlights of successful farming community projects.</li>
+            <li><strong>New Feature:</strong> Interactive forum for farmers to discuss real-time issues.</li>
+        </ul>
+    </div>
+
+<a class="back-button" onclick="backToOptions()">Back</a>
+</section>
+      
+      <section id="solutions" class="content-section" style="display:none;">
+    <h2><i class="fas fa-lightbulb"></i> Solutions for Farmers</h2> <!-- Main Section Icon -->
+
+    <div class="card">
+        <h4><i class="fas fa-bug"></i> Solution for Pest Control</h4>
+        <p><strong>Answer:</strong> Use integrated pest management (IPM) techniques, such as introducing beneficial insects like ladybugs or applying neem oil as an organic pesticide.</p>
+        <ul>
+            <li><strong>Tip:</strong> Regularly monitor crops for pest activity to act early.</li>
+            <li><strong>Feature:</strong> IPM minimizes chemical usage, preserving soil and water health.</li>
+            <li><strong>Idea:</strong> Set up pheromone traps to disrupt pest mating cycles effectively.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Solution for Irrigation Issues</h4>
+        <p><strong>Answer:</strong> Install drip irrigation systems to minimize water waste and ensure efficient water delivery to plant roots.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use soil moisture sensors to schedule irrigation efficiently.</li>
+            <li><strong>Feature:</strong> Drip irrigation reduces evaporation and delivers water precisely to roots.</li>
+            <li><strong>Idea:</strong> Collect rainwater in storage tanks to complement irrigation systems.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Solution for Poor Soil Fertility</h4>
+        <p><strong>Answer:</strong> Incorporate organic matter like compost and manure into the soil to improve its structure and nutrient content.</p>
+        <ul>
+            <li><strong>Tip:</strong> Test soil regularly to identify nutrient deficiencies.</li>
+            <li><strong>Feature:</strong> Organic matter improves soil aeration and water retention.</li>
+            <li><strong>Idea:</strong> Use green manure crops like legumes to naturally fix nitrogen in the soil.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-sun"></i> Solution for Sunlight Management</h4>
+        <p><strong>Answer:</strong> Use shade nets or agroforestry techniques to protect crops from excessive sunlight while maintaining optimal growth conditions.</p>
+        <ul>
+            <li><strong>Tip:</strong> Adjust shade intensity based on crop requirements.</li>
+            <li><strong>Feature:</strong> Shade nets reduce water loss and protect crops from harsh UV rays.</li>
+            <li><strong>Idea:</strong> Plant fast-growing trees as windbreaks and shade providers.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Solution for Crop Diseases</h4>
+        <p><strong>Answer:</strong> Rotate crops annually to prevent the buildup of pathogens and plant resistant crop varieties for better protection.</p>
+        <ul>
+            <li><strong>Tip:</strong> Sanitize farming tools to prevent the spread of pathogens.</li>
+            <li><strong>Feature:</strong> Crop rotation improves soil biodiversity and disrupts disease cycles.</li>
+            <li><strong>Idea:</strong> Introduce companion planting to deter pests and enhance disease resistance.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-chart-line"></i> Solution for Market Access</h4>
+        <p><strong>Answer:</strong> Partner with local cooperatives or leverage online platforms to sell produce directly to consumers and cut out middlemen.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use social media to promote your farm and its produce.</li>
+            <li><strong>Feature:</strong> Direct sales increase profits and build customer relationships.</li>
+            <li><strong>Idea:</strong> Host farm tours or community-supported agriculture (CSA) programs.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Solution for Mechanization</h4>
+        <p><strong>Answer:</strong> Consider leasing farm machinery instead of buying to reduce costs and ensure access to the latest technology.</p>
+        <ul>
+            <li><strong>Tip:</strong> Schedule regular maintenance checks for leased equipment.</li>
+            <li><strong>Feature:</strong> Leasing reduces upfront costs and provides flexibility.</li>
+            <li><strong>Idea:</strong> Join a machinery-sharing program in your local farming community.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Solution for Drought Conditions</h4>
+        <p><strong>Answer:</strong> Grow drought-resistant crop varieties and use mulching to retain soil moisture and reduce evaporation.</p>
+        <ul>
+            <li><strong>Tip:</strong> Install windbreaks to reduce water loss from soil during windy conditions.</li>
+            <li><strong>Feature:</strong> Drought-resistant crops are genetically adapted to survive with minimal water.</li>
+            <li><strong>Idea:</strong> Use biochar in the soil to improve water retention and carbon sequestration.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-recycle"></i> Solution for Waste Management</h4>
+        <p><strong>Answer:</strong> Convert agricultural waste into compost or biochar to enhance soil fertility and reduce environmental pollution.</p>
+        <ul>
+            <li><strong>Tip:</strong> Segregate waste into biodegradable and non-biodegradable categories.</li>
+            <li><strong>Feature:</strong> Composting reduces landfill waste and enriches the soil naturally.</li>
+            <li><strong>Idea:</strong> Set up a small-scale biogas plant for energy production from organic waste.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-solar-panel"></i> Solution for High Energy Costs</h4>
+        <p><strong>Answer:</strong> Invest in solar-powered equipment like water pumps to reduce dependency on expensive fossil fuels.</p>
+        <ul>
+            <li><strong>Tip:</strong> Apply for government subsidies or grants for renewable energy installations.</li>
+            <li><strong>Feature:</strong> Solar power reduces long-term energy expenses and is eco-friendly.</li>
+            <li><strong>Idea:</strong> Combine solar panels with battery storage to ensure uninterrupted power supply.</li>
+        </ul>
+    </div>
+          <a class="back-button" onclick="backToOptions()">Back</a>
+
+</section>
+
+                 
+                 <section id="solutions" class="content-section" style="display:none;">
+    <h2><i class="fas fa-lightbulb"></i> Solutions for Farmers</h2> <!-- Main Section Icon -->
+
+    <div class="card">
+        <h4><i class="fas fa-bug"></i> Solution for Pest Control</h4>
+        <p><strong>Answer:</strong> Use integrated pest management (IPM) techniques, such as introducing beneficial insects like ladybugs or applying neem oil as an organic pesticide.</p>
+        <ul>
+            <li><strong>Tip:</strong> Regularly monitor crops for pest activity to act early.</li>
+            <li><strong>Feature:</strong> IPM minimizes chemical usage, preserving soil and water health.</li>
+            <li><strong>Idea:</strong> Set up pheromone traps to disrupt pest mating cycles effectively.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Solution for Irrigation Issues</h4>
+        <p><strong>Answer:</strong> Install drip irrigation systems to minimize water waste and ensure efficient water delivery to plant roots.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use soil moisture sensors to schedule irrigation efficiently.</li>
+            <li><strong>Feature:</strong> Drip irrigation reduces evaporation and delivers water precisely to roots.</li>
+            <li><strong>Idea:</strong> Collect rainwater in storage tanks to complement irrigation systems.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Solution for Poor Soil Fertility</h4>
+        <p><strong>Answer:</strong> Incorporate organic matter like compost and manure into the soil to improve its structure and nutrient content.</p>
+        <ul>
+            <li><strong>Tip:</strong> Test soil regularly to identify nutrient deficiencies.</li>
+            <li><strong>Feature:</strong> Organic matter improves soil aeration and water retention.</li>
+            <li><strong>Idea:</strong> Use green manure crops like legumes to naturally fix nitrogen in the soil.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-sun"></i> Solution for Sunlight Management</h4>
+        <p><strong>Answer:</strong> Use shade nets or agroforestry techniques to protect crops from excessive sunlight while maintaining optimal growth conditions.</p>
+        <ul>
+            <li><strong>Tip:</strong> Adjust shade intensity based on crop requirements.</li>
+            <li><strong>Feature:</strong> Shade nets reduce water loss and protect crops from harsh UV rays.</li>
+            <li><strong>Idea:</strong> Plant fast-growing trees as windbreaks and shade providers.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Solution for Crop Diseases</h4>
+        <p><strong>Answer:</strong> Rotate crops annually to prevent the buildup of pathogens and plant resistant crop varieties for better protection.</p>
+        <ul>
+            <li><strong>Tip:</strong> Sanitize farming tools to prevent the spread of pathogens.</li>
+            <li><strong>Feature:</strong> Crop rotation improves soil biodiversity and disrupts disease cycles.</li>
+            <li><strong>Idea:</strong> Introduce companion planting to deter pests and enhance disease resistance.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-chart-line"></i> Solution for Market Access</h4>
+        <p><strong>Answer:</strong> Partner with local cooperatives or leverage online platforms to sell produce directly to consumers and cut out middlemen.</p>
+        <ul>
+            <li><strong>Tip:</strong> Use social media to promote your farm and its produce.</li>
+            <li><strong>Feature:</strong> Direct sales increase profits and build customer relationships.</li>
+            <li><strong>Idea:</strong> Host farm tours or community-supported agriculture (CSA) programs.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Solution for Mechanization</h4>
+        <p><strong>Answer:</strong> Consider leasing farm machinery instead of buying to reduce costs and ensure access to the latest technology.</p>
+        <ul>
+            <li><strong>Tip:</strong> Schedule regular maintenance checks for leased equipment.</li>
+            <li><strong>Feature:</strong> Leasing reduces upfront costs and provides flexibility.</li>
+            <li><strong>Idea:</strong> Join a machinery-sharing program in your local farming community.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Solution for Drought Conditions</h4>
+        <p><strong>Answer:</strong> Grow drought-resistant crop varieties and use mulching to retain soil moisture and reduce evaporation.</p>
+        <ul>
+            <li><strong>Tip:</strong> Install windbreaks to reduce water loss from soil during windy conditions.</li>
+            <li><strong>Feature:</strong> Drought-resistant crops are genetically adapted to survive with minimal water.</li>
+            <li><strong>Idea:</strong> Use biochar in the soil to improve water retention and carbon sequestration.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-recycle"></i> Solution for Waste Management</h4>
+        <p><strong>Answer:</strong> Convert agricultural waste into compost or biochar to enhance soil fertility and reduce environmental pollution.</p>
+        <ul>
+            <li><strong>Tip:</strong> Segregate waste into biodegradable and non-biodegradable categories.</li>
+            <li><strong>Feature:</strong> Composting reduces landfill waste and enriches the soil naturally.</li>
+            <li><strong>Idea:</strong> Set up a small-scale biogas plant for energy production from organic waste.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-solar-panel"></i> Solution for High Energy Costs</h4>
+        <p><strong>Answer:</strong> Invest in solar-powered equipment like water pumps to reduce dependency on expensive fossil fuels.</p>
+        <ul>
+            <li><strong>Tip:</strong> Apply for government subsidies or grants for renewable energy installations.</li>
+            <li><strong>Feature:</strong> Solar power reduces long-term energy expenses and is eco-friendly.</li>
+            <li><strong>Idea:</strong> Combine solar panels with battery storage to ensure uninterrupted power supply.</li>
+        </ul>
+    </div>
+
+
+                 
+        <a class="back-button" onclick="backToOptions()">Back</a>
+         </section>
+            
+           <section id="updates" class="content-section" style="display:none;">
+    <h2><i class="fas fa-newspaper"></i> Latest Updates</h2> <!-- Main Section Icon -->
+    
+    <!-- Update Items Section -->
+    <h3><i class="fas fa-bell"></i> Update Items</h3>
+    
+    <div class="card">
+        <h4><i class="fas fa-robot"></i> AI Revolutionizing Farming Practices</h4>
+        <p>Artificial intelligence is being used to predict crop yields, manage pest control, and optimize irrigation systems for better productivity.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-wind"></i> Wind-Powered Water Pumps</h4>
+        <p>Farmers in remote areas are adopting wind-powered pumps as a sustainable irrigation solution.</p>
+    </div>
+    
+    <!-- New Features Section -->
+    <h3><i class="fas fa-cogs"></i> New Features</h3>
+
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Breakthrough in Organic Fertilizers</h4>
+        <p>A new organic fertilizer made from algae is showing promise in boosting soil health while being environmentally friendly.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-paper-plane"></i> Drones for Precision Agriculture</h4>
+        <p>Drones are being used to map fields, monitor crop health, and even spray pesticides with remarkable accuracy.</p>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-cloud-sun"></i> Climate-Resilient Crop Varieties</h4>
+        <p>Researchers have developed crop varieties that can withstand extreme weather conditions, helping farmers combat climate change.</p>
+    </div>
+    
+    <!-- New Ideas Section -->
+    <h3><i class="fas fa-lightbulb"></i> New Ideas</h3>
+
+    <div class="card">
+        <h4><i class="fas fa-chart-line"></i> Rise in Organic Food Demand</h4>
+        <p>The global demand for organic produce is rising, opening new opportunities for farmers to cater to health-conscious consumers.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Water Harvesting Innovations</h4>
+        <p>Innovative rainwater harvesting systems are being adopted in arid regions to ensure water availability for farming.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-solar-panel"></i> Solar-Powered Farm Equipment</h4>
+        <p>Farmers are transitioning to solar-powered tractors and irrigation systems to reduce their carbon footprint and energy costs.</p>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-globe"></i> Global Trade Policy Changes</h4>
+        <p>Recent changes in agricultural trade policies are creating new opportunities for exporting crops like wheat and soybeans.</p>
+    </div>
+    
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Advances in Vertical Farming</h4>
+        <p>Vertical farming techniques are enabling urban farmers to grow more produce in limited spaces with less water.</p>
+    </div>
+
+
+     <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+            
+            <section id="events" class="content-section" style="display:none;">
+    <h2><i class="fas fa-calendar"></i> Events Calendar</h2> <!-- Main Section Icon -->
+
+    <div class="card">
+        <h4><i class="fas fa-leaf"></i> Organic Farming Workshop</h4>
+        <p>Learn the basics of organic farming, from soil health to crop rotation, in this hands-on workshop.</p>
+        <p>Date: January 15, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Hands-on demonstrations on organic farming techniques.</li>
+            <li><strong>Feature:</strong> Expert speakers on soil health and pest management.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-seedling"></i> Sustainable Agriculture Conference</h4>
+        <p>Join experts and farmers to discuss sustainable agriculture practices and innovations that benefit the environment.</p>
+        <p>Date: February 20, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Panel discussions on sustainable farming practices.</li>
+            <li><strong>Feature:</strong> Networking opportunities with industry leaders and experts.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-tractor"></i> Tractor Safety and Operation Seminar</h4>
+        <p>Gain knowledge about tractor safety, maintenance, and proper operation to prevent accidents and improve efficiency.</p>
+        <p>Date: March 5, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Practical demonstrations on tractor operation and safety.</li>
+            <li><strong>Feature:</strong> Hands-on learning about tractor maintenance and troubleshooting.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-water"></i> Efficient Irrigation Techniques Workshop</h4>
+        <p>Learn how to optimize water usage with modern irrigation systems and technologies.</p>
+        <p>Date: March 18, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Live demonstrations of advanced irrigation systems.</li>
+            <li><strong>Feature:</strong> Case studies on water usage optimization from successful farms.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-bug"></i> Integrated Pest Management Webinar</h4>
+        <p>Understand how to control pests naturally using integrated pest management (IPM) techniques without harming the ecosystem.</p>
+        <p>Date: April 10, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Overview of eco-friendly pest control methods.</li>
+            <li><strong>Feature:</strong> Access to expert advice on implementing IPM on your farm.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-cogs"></i> Farm Equipment Maintenance and Repair Course</h4>
+        <p>Take part in a hands-on course covering maintenance and repair of essential farming tools and machinery.</p>
+        <p>Date: April 25, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> In-depth repair techniques for farming machinery.</li>
+            <li><strong>Feature:</strong> Tips for regular maintenance to avoid costly repairs.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-sun"></i> Climate Change and Agriculture Summit</h4>
+        <p>Explore the impact of climate change on agriculture and learn strategies for adaptation and resilience.</p>
+        <p>Date: May 5, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Keynote speeches by climate change experts.</li>
+            <li><strong>Feature:</strong> Discussions on adaptive strategies for climate-resilient farming.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-briefcase"></i> Agricultural Business Growth Seminar</h4>
+        <p>This seminar will focus on how to expand your agricultural business through better marketing and financial strategies.</p>
+        <p>Date: May 18, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Workshops on business marketing and branding for farms.</li>
+            <li><strong>Feature:</strong> Tips on managing finances and improving profitability.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-hand-holding-water"></i> Water Conservation in Farming Webinar</h4>
+        <p>Learn how to conserve water effectively on your farm, with practical tips and solutions for irrigation and other systems.</p>
+        <p>Date: June 2, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Practical solutions for reducing water waste in irrigation.</li>
+            <li><strong>Feature:</strong> Case studies on successful water conservation projects.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h4><i class="fas fa-users"></i> Farmer Networking Meetup</h4>
+        <p>A casual meetup for farmers to network, share knowledge, and discuss challenges and successes in the farming community.</p>
+        <p>Date: June 20, 2024</p>
+        <ul>
+            <li><strong>Feature:</strong> Informal networking with fellow farmers and experts.</li>
+            <li><strong>Feature:</strong> Opportunities to discuss industry trends and share best practices.</li>
+        </ul>
+    </div>
+
+
+             <a class="back-button" onclick="backToOptions()">Back</a>
+            </section>
+            
+        </div>
+    </div>
+
+    <footer>
+        <p>Agriculture Information Hub | <a href="Smart-bank-system.html">Smart Bank System</a></p>
+        
+
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => section.style.display = 'none');
+            document.getElementById('options').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function backToOptions() {
+            document.querySelectorAll('.content-section').forEach(section => section.style.display = 'none');
+            document.getElementById('options').style.display = 'grid';
+        }
+    </script>
+    
+    <a href="javascript:void(0);" onclick="goBack()" class="back-button">Back</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Connect</title>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            font-family: 'Arial', 'Times New Roman', Times, serif;
+            background: linear-gradient(to bottom right, #e6ffe6, #b3ffb3, #66cc66); /* Green shades for agriculture */
+            color: #004d00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #006600;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: linear-gradient(to right, #4CAF50, #2E8B57); /* Updated button gradient */
+            font-size: 1em;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+
+        nav ul li a:hover {
+            transform: scale(1.1);
+            background: linear-gradient(to right, #45a049, #1f7a42); /* Darker green on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            margin-top: 10px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            color: #004d00;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .content-section p {
+            font-size: 1.1em;
+        }
+
+        /* Styling Contact Section */
+        #contact {
+            background: linear-gradient(to bottom, #ffffff, #f0f0f5);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        #contact h2 {
+            font-size: 2.5em;
+            color: #006600;
+            margin-bottom: 20px;
+        }
+
+        #contact p {
+            font-size: 1.2em;
+            color: #004d00;
+        }
+
+        .contact-form {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1 1 calc(50% - 20px);
+            max-width: calc(50% - 20px);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: #006600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #333;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #006600;
+            box-shadow: 0 0 5px rgba(0, 102, 0, 0.5);
+        }
+
+        .contact-form input[type="submit"] {
+            background: linear-gradient(to right, #4CAF50, #2E8B57); /* Updated submit button gradient */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            margin-top: 20px;
+            width: auto;
+            align-self: center;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            transform: scale(1.05);
+            background: linear-gradient(to right, #45a049, #1f7a42); /* Darker gradient on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-details {
+            margin-top: 30px;
+            font-size: 1em;
+            color: #004d00;
+        }
+
+        .contact-details p {
+            margin: 10px 0;
+        }
+
+        .contact-details a {
+            color: #006600;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .contact-details a:hover {
+            color: #339933;
+        }
+
+        /* Animated Background Shapes */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: 0;
+            animation: pulse 15s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.5);
+            }
+        }
+
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(51, 153, 51, 0.5);
+            top: 10%;
+            left: 15%;
+            animation-duration: 18s;
+        }
+
+        .shape2 {
+            width: 200px;
+            height: 400px;
+            background: rgba(0, 102, 0, 0.4);
+            bottom: 10%;
+            right: 20%;
+            animation-duration: 20s;
+        }
+
+        .shape3 {
+            width: 200px;
+            height: 200px;
+            background: rgba(179, 255, 179, 0.5);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 25s;
+        }
+
+        .shape4 {
+            width: 150px;
+            height: 150px;
+            background: rgba(102, 204, 102, 0.4);
+            bottom: 15%;
+            left: 10%;
+            animation-duration: 22s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Agri Connect</h1>
+            <nav>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="showSection('home')">Home</a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('about')">About Us</a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('services')">Services</a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('blog')">Blog</a></li>
+                    <li><a href="javascript:void(0)" onclick="showSection('contact')">Contact Us</a></li>
+                    <li><a href="register.html">Register</a></li>
+                     <li><a href="admin.html">Admin</a></li>
+
+                </ul>
+            </nav>
+        </header>
+        <section id="home" class="content-section">
+          
+            <h2>Welcome</h2>
+            <p>Your destination for all agricultural resources and information.</p>
+            
+            <ul>
+                <li>Access a wealth of farming knowledge.</li>
+                <li>Connect with experts in agriculture.</li>
+                <li>Stay updated on the latest industry trends.</li>
+            </ul>
+            
+            <h3>Explore the following sections:</h3>
+            <ul>
+               <li><a href="javascript:void(0)" onclick="showSection('About us')">About Us</a></li>
+               <li><a href="javascript:void(0)" onclick="showSection('services')">Our Services</a></li>
+               <li><a href="javascript:void(0)" onclick="showSection('blog')">Blog</a></li>
+               <li><a href="javascript:void(0)" onclick="showSection('contact')">Contact Us</a></li>
+
+            </ul>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>About Us</h2>
+            <p>We provide resources and insights for farming communities worldwide.</p>
+            
+            <h3>Our Values:</h3>
+<ul>
+    <li><strong>Sustainability:</strong> Committing to environmentally friendly practices in agriculture.</li>
+    <li><strong>Innovation:</strong> Embracing modern agricultural technologies and methods.</li>
+    <li><strong>Community:</strong> Building strong relationships with farmers and industry experts.</li>
+    <li><strong>Resource Sharing:</strong> Connect with other farmers to share resources, equipment, and knowledge.</li>
+    <li><strong>Technology Integration:</strong> Learn how to integrate the latest agricultural technologies into your farming practices.</li>
+    <li><strong>Customized Solutions:</strong> Get personalized solutions tailored to your farm's unique needs.</li>
+</ul>
+</section>
+
+        <section id="services" class="content-section">
+            <h2>Our Services</h2>
+            <p>Explore consulting, tools, and resources for agricultural success.</p>
+            
+            <h3>1. Consultation Services:</h3>
+            <p>Receive personalized advice from our expert agricultural consultants. We assist with crop selection, disease prevention, pest management, and sustainable practices. Whether you are a small-scale farmer or managing large agricultural operations, our tailored solutions will help optimize your farming potential.</p>
+            
+            <ul>
+                <li>Customized crop recommendations based on local climate and soil conditions.</li>
+                <li>Integrated pest management plans for minimal chemical usage.</li>
+                <li>Long-term farm development strategies.</li>
+            </ul>
+            
+            <h3>2. Soil Testing:</h3>
+            <p>We provide advanced soil testing services to understand the unique characteristics of your soil. Our detailed reports help you maintain soil health and fertility, ensuring high yields.</p>
+            
+            <ul>
+                <li>Nutrient profiling for balanced fertilization.</li>
+                <li>Recommendations for organic or chemical soil amendments.</li>
+                <li>Regular monitoring services for long-term soil health.</li>
+            </ul>
+        </section>
+
+        <section id="blog" class="content-section">
+            <h2>Blog</h2>
+            <p>Catch up on the latest trends, tips, and industry news.</p>
+            
+            <h3>Industry News:</h3>
+            <p>Stay updated with the latest news from the agriculture industry, including market trends, government policies, and emerging technologies that are shaping the future of farming.</p>
+           
+            <h3>Best Practices:</h3>
+            <p>Discover farming techniques that improve crop yield, optimize resource use, and promote sustainability. These best practices are based on real-world results and expert advice.</p>
+            
+            <h3>Policy Updates:</h3>
+            <p>Keep track of the latest agricultural policies affecting your farm, including subsidies, government grants, and environmental regulations. Stay informed to take advantage of new opportunities and navigate challenges effectively.</p>
+            
+            <h3>New Research:</h3>
+            <p>Dive into groundbreaking research on sustainable farming practices, climate-resilient crops, and advanced pest control solutions. Understand how these findings can be integrated into everyday farming to enhance productivity while conserving resources.</p>
+        </section>
+        
+        <section id="contact" class="content-section active">
+            <h2>Contact Us</h2>
+            <p>Reach out for inquiries and support to grow with us.</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact-number">Contact Number:</label>
+                    <input type="tel" id="contact-number" name="contact-number" required placeholder="Enter your contact number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Write your message here"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Send Message">
+                </div>
+                
+            </form>
+            <div class="contact-details">
+                <p><strong>Phone:</strong> +123 456 7890</p>
+                <p><strong>Email:</strong> <a href="mailto:info@agrihub.com">info@agrihub.com</a></p>
+                <p><strong>Follow us on:</strong> <a href="#">Facebook</a>, <a href="#">Twitter</a>, <a href="#">Instagram</a></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Background Shapes -->
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4"></div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+        }
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', function () {
+                document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        
+         
+
+
+        // Ensure no section is active by default
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+    </script>
+    
+</body>
+</html>

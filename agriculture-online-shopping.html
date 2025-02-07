@@ -1,0 +1,930 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Online Shopping System</title>
+    <style>
+        /* Basic Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        /* Search Bar */
+        #search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+        #search-bar input {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        #search-bar button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        /* Wishlist and Cart */
+        .wishlist, .cart {
+            margin: 20px 0;
+        }
+        .wishlist ul, .cart ul {
+            list-style: none;
+            padding: 0;
+        }
+        /* Product Display */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 22%;
+            margin: 15px 0;
+            padding: 10px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .product:hover {
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .product p {
+            color: #888;
+        }
+        .product button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .product button:hover {
+            background-color: #218838;
+        }
+        .product .wishlist-btn {
+            background-color: #ffc107;
+        }
+        .product .wishlist-btn:hover {
+            background-color: #e0a800;
+        }
+        .product .stock {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .product .rating {
+            color: #f0ad4e;
+            margin-top: 5px;
+        }
+        .product .quantity {
+            margin-top: 10px;
+        }
+        /* Cart and Checkout */
+        #cart {
+            background-color: #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        #cart h3 {
+            margin-bottom: 10px;
+        }
+        #cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        #cart-items li {
+            margin-bottom: 10px;
+        }
+        #total {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .checkout {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .checkout input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .checkout button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .checkout button:hover {
+            background-color: #0056b3;
+        }
+        /* Order Summary and Delivery */
+        .order-summary {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .order-summary h2 {
+            margin-bottom: 20px;
+        }
+        .order-summary input, .order-summary textarea {
+            padding: 10px;
+            width: 70%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .order-summary button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .order-summary button:hover {
+            background-color: #218838;
+        }
+        /* Wishlist and History Sections */
+        .wishlist, .order-history {
+            background-color: #e9ecef;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .wishlist h3, .order-history h3 {
+            margin-bottom: 10px;
+        }
+        .order {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .order h4 {
+            margin-bottom: 10px;
+        }
+        .order ul {
+            list-style: none;
+            padding: 0;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product {
+                width: 48%;
+            }
+        }
+        @media (max-width: 480px) {
+            .product {
+                width: 100%;
+            }
+              /* Style for the back button */
+        .back-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #c9302c;
+        }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Agriculture Products Shopping</h1>
+</header>
+
+<h1>Product List</h1>
+
+<!-- Category Filter -->
+<select id="category-filter" onchange="filterByCategory()">
+    <option value="all">All Categories</option>
+    <option value="fruits">Fruits</option>
+    <option value="vegetables">Vegetables</option>
+    <option value="onion">Onions</option>
+    <option value="millet">Millet</option>
+    <option value="animal_food">Animal Food</option>
+    <option value="crop">Crop</option>
+    <option value="seed">Seed</option>
+    <option value="fertilizer">Fertilizer</option>
+    <option value="cereal">Cereal</option>
+    <option value="kirai">Kirai</option>
+    <option value="flower">Flower</option>
+    <option value="spice">Spice</option>
+    <option value="maize">Maize</option>
+    <option value="mushroom">Mushroom</option>
+    <option value="herb">Herb</option>
+    <option value="betel">Betel</option>
+    <option value="offers">Offers</option>
+    <option value="agriculture_tools">Agriculture Tools</option>
+    <option value="farming_tools">Farming Tools</option>
+    <option value="milk">Milk</option>
+    <option value="eggs">Eggs</option>
+    <option value="cotton">Cotton</option>
+    <option value="jute">Jute</option>
+    <option value="fiber">Fiber</option>
+    <option value="non_organic_food_products">Non Organic Food Products</option>
+    <option value="organic_food_products">Organic Food Products</option>
+    <option value="pesticides">Pesticides</option>
+    <option value="herbicides">Herbicides</option>
+    <option value="fungicides">Fungicides</option>
+    <option value="irrigation_systems">Irrigation Systems</option>
+    <option value="greenhouse_materials">Greenhouse Materials</option>
+    <option value="soil_conditioners">Soil Conditioners</option>
+    <option value="compost">Compost</option>
+    <option value="mulch">Mulch</option>
+    <option value="tractor_parts">Tractor Parts</option>
+    <option value="plowing_tools">Plowing Tools</option>
+    <option value="harvesting_tools">Harvesting Tools</option>
+    <option value="watering_cans">Watering Cans</option>
+    <option value="plant_pots">Plant Pots</option>
+    <option value="landscape_materials">Landscape Materials</option>
+    <option value="animal_husbandry">Animal Husbandry</option>
+    <option value="beekeeping">Beekeeping</option>
+    <option value="fish_farming">Fish Farming</option>
+    <option value="aquaculture_supplies">Aquaculture Supplies</option>
+    <option value="dairy_products">Dairy Products</option>
+    <option value="poultry_products">Poultry Products</option>
+    <option value="livestock_feed">Livestock Feed</option>
+    <option value="crop_protection">Crop Protection</option>
+    <option value="soil_testing">Soil Testing</option>
+</select>
+
+<!-- Search Bar -->
+<div id="search-bar">
+    <input type="text" id="search-input" placeholder="Search products...">
+    <button onclick="searchProducts()">Search</button>
+</div>
+
+<!-- Wishlist Section -->
+<div class="wishlist">
+    <h3>Your Wishlist</h3>
+    <ul id="wishlist-items">
+        <!-- Wishlist items will appear here -->
+    </ul>
+</div>
+
+<!-- Product List -->
+<div class="container" id="product-list">
+    <!-- Products will be generated dynamically -->
+</div>
+
+<!-- Cart Section -->
+<div id="cart">
+    <h3>Your Cart</h3>
+    <ul id="cart-items">
+        <!-- Cart items will appear here -->
+    </ul>
+    <p id="total">Total: ₹0.00</p>
+    <div class="checkout">
+        <button onclick="proceedToBuy()">Proceed to Buy</button>
+    </div>
+</div>
+
+<!-- Order Summary and Delivery Section -->
+<div class="order-summary" id="order-summary" style="display:none;">
+    <h2>Delivery Details</h2>
+    <p>Total Amount: <span id="final-amount">₹0.00</span></p>
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="address" placeholder="Address">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <input type="text" id="pincode" placeholder="Pin Code">
+    <textarea id="order-notes" placeholder="Additional Notes (Optional)"></textarea>
+    <h3>Payment Method</h3>
+    <input type="radio" id="cod" name="payment-method" value="Cash on Delivery"> <label for="cod">Cash on Delivery</label><br>
+    <input type="radio" id="credit-card" name="payment-method" value="Credit Card"> <label for="credit-card">Credit Card</label><br>
+    <input type="radio" id="debit-card" name="payment-method" value="Debit Card"> <label for="debit-card">Debit Card</label><br>
+    <input type="radio" id="net-banking" name="payment-method" value="Net Banking"> <label for="net-banking">Net Banking</label><br>
+    <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<!-- Order History Section -->
+<div class="order-history">
+    <h3>Order History</h3>
+    <div id="order-history-items">
+        <!-- Order history items will appear here -->
+    </div>
+</div>
+
+<script>
+// Example products data with stock, quantity, and ratings
+const products = [
+    // Fruits
+    { id: 1, name: "Apple", category: "fruits", price: 100, stock: 10, rating: 4.5, image: "apple", icon: "🍎" },
+    { id: 2, name: "Banana", category: "fruits", price: 50, stock: 20, rating: 4.2, image: "banana", icon: "🍌" },
+    { id: 3, name: "Orange", category: "fruits", price: 80, stock: 15, rating: 4.7, image: "orange", icon: "🍊" },
+    { id: 4, name: "Grapes", category: "fruits", price: 120, stock: 25, rating: 4.3, image: "grapes", icon: "🍇" },
+    { id: 5, name: "Pineapple", category: "fruits", price: 150, stock: 12, rating: 4.6, image: "pineapple", icon: "🍍" },
+
+
+    // Vegetables
+{ id: 6, name: "Carrot", category: "vegetables", price: 60, stock: 30, rating: 4.4, image: "carrot", icon: "🥕" },
+{ id: 7, name: "Potato", category: "vegetables", price: 40, stock: 50, rating: 4.1, image: "potato", icon: "🥔" },
+{ id: 8, name: "Tomato", category: "vegetables", price: 70, stock: 20, rating: 4.5, image: "tomato", icon: "🍅" },
+{ id: 9, name: "Broccoli", category: "vegetables", price: 90, stock: 18, rating: 4.6, image: "broccoli", icon: "🥦" },
+{ id: 10, name: "Spinach", category: "vegetables", price: 50, stock: 25, rating: 4.2, image: "spinach", icon: "🌱" },
+
+
+    // Onions
+{ id: 11, name: "Red Onion", category: "onion", price: 40, stock: 30, rating: 4.4, image: "red_onion", icon: "🧅" },
+{ id: 12, name: "Yellow Onion", category: "onion", price: 45, stock: 28, rating: 4.3, image: "yellow_onion", icon: "🧅" },
+{ id: 13, name: "White Onion", category: "onion", price: 50, stock: 22, rating: 4.5, image: "white_onion", icon: "🧅" },
+{ id: 14, name: "Shallots", category: "onion", price: 55, stock: 15, rating: 4.6, image: "shallots", icon: "🧅" },
+{ id: 15, name: "Spring Onion", category: "onion", price: 30, stock: 20, rating: 4.2, image: "spring_onion", icon: "🧅" },
+
+
+    // Millet
+{ id: 16, name: "Pearl Millet", category: "millet", price: 200, stock: 10, rating: 4.7, image: "pearl_millet", icon: "🌾" },
+{ id: 17, name: "Finger Millet", category: "millet", price: 180, stock: 12, rating: 4.5, image: "finger_millet", icon: "🌾" },
+{ id: 18, name: "Foxtail Millet", category: "millet", price: 220, stock: 8, rating: 4.6, image: "foxtail_millet", icon: "🌾" },
+{ id: 19, name: "Little Millet", category: "millet", price: 210, stock: 15, rating: 4.4, image: "little_millet", icon: "🌾" },
+{ id: 20, name: "Kodo Millet", category: "millet", price: 190, stock: 18, rating: 4.3, image: "kodo_millet", icon: "🌾" },
+
+
+    // Animal Food
+{ id: 21, name: "Horse Feed", category: "animal_food", price: 500, stock: 20, rating: 4.6, image: "horse_feed", icon: "🐴" },
+{ id: 22, name: "Chicken Feed", category: "animal_food", price: 300, stock: 25, rating: 4.5, image: "chicken_feed", icon: "🐔" },
+{ id: 23, name: "Cattle Feed", category: "animal_food", price: 400, stock: 15, rating: 4.4, image: "cattle_feed", icon: "🐄" },
+{ id: 24, name: "Pig Feed", category: "animal_food", price: 350, stock: 18, rating: 4.3, image: "pig_feed", icon: "🐖" },
+{ id: 25, name: "Fish Feed", category: "animal_food", price: 450, stock: 12, rating: 4.7, image: "fish_feed", icon: "🐟" },
+
+
+    // Crop
+{ id: 26, name: "Wheat", category: "crop", price: 1500, stock: 30, rating: 4.6, image: "wheat", icon: "🌾" },
+{ id: 27, name: "Rice", category: "crop", price: 1800, stock: 20, rating: 4.5, image: "rice", icon: "🍚" },
+{ id: 28, name: "Barley", category: "crop", price: 1600, stock: 25, rating: 4.4, image: "barley", icon: "🌾" },
+{ id: 29, name: "Oats", category: "crop", price: 1700, stock: 15, rating: 4.7, image: "oats", icon: "🌾" },
+{ id: 30, name: "Rye", category: "crop", price: 1900, stock: 12, rating: 4.3, image: "rye", icon: "🌾" },
+
+
+   // Seed
+{ id: 31, name: "Tomato Seeds", category: "seed", price: 100, stock: 50, rating: 4.5, image: "tomato_seeds", icon: "🌱" },
+{ id: 32, name: "Pepper Seeds", category: "seed", price: 120, stock: 45, rating: 4.4, image: "pepper_seeds", icon: "🌶️" },
+{ id: 33, name: "Corn Seeds", category: "seed", price: 150, stock: 40, rating: 4.6, image: "corn_seeds", icon: "🌽" },
+{ id: 34, name: "Carrot Seeds", category: "seed", price: 90, stock: 55, rating: 4.3, image: "carrot_seeds", icon: "🥕" },
+{ id: 35, name: "Lettuce Seeds", category: "seed", price: 80, stock: 60, rating: 4.5, image: "lettuce_seeds", icon: "🥬" },
+
+
+    // Fertilizer
+{ id: 36, name: "Organic Fertilizer", category: "fertilizer", price: 250, stock: 30, rating: 4.7, image: "organic_fertilizer", icon: "🌱" },
+{ id: 37, name: "NPK Fertilizer", category: "fertilizer", price: 300, stock: 25, rating: 4.6, image: "npk_fertilizer", icon: "🌿" },
+{ id: 38, name: "Compost", category: "fertilizer", price: 200, stock: 20, rating: 4.5, image: "compost", icon: "🪴" },
+{ id: 39, name: "Bone Meal", category: "fertilizer", price: 220, stock: 18, rating: 4.4, image: "bone_meal", icon: "🦴" },
+{ id: 40, name: "Urea", category: "fertilizer", price: 180, stock: 22, rating: 4.3, image: "urea", icon: "💧" },
+
+    // Cereal
+{ id: 41, name: "Corn", category: "cereal", price: 600, stock: 30, rating: 4.5, image: "corn", icon: "🌽" },
+{ id: 42, name: "Oats", category: "cereal", price: 550, stock: 25, rating: 4.6, image: "oats", icon: "🌾" },
+{ id: 43, name: "Rice", category: "cereal", price: 700, stock: 20, rating: 4.4, image: "rice", icon: "🍚" },
+{ id: 44, name: "Wheat", category: "cereal", price: 650, stock: 15, rating: 4.7, image: "wheat", icon: "🌾" },
+{ id: 45, name: "Barley", category: "cereal", price: 620, stock: 18, rating: 4.3, image: "barley", icon: "🌾" },
+
+
+    // Kirai
+{ id: 46, name: "Amaranth", category: "kirai", price: 80, stock: 40, rating: 4.5, image: "amaranth", icon: "🍃" },
+{ id: 47, name: "Coriander", category: "kirai", price: 70, stock: 35, rating: 4.4, image: "coriander", icon: "🌿" },
+{ id: 48, name: "Spinach", category: "kirai", price: 90, stock: 30, rating: 4.6, image: "spinach", icon: "🍃" },
+{ id: 49, name: "Fenugreek", category: "kirai", price: 60, stock: 25, rating: 4.3, image: "fenugreek", icon: "🌱" },
+{ id: 50, name: "Mustard Greens", category: "kirai", price: 85, stock: 20, rating: 4.4, image: "mustard_greens", icon: "🌿" },
+
+
+    // Flower
+{ id: 51, name: "Rose", category: "flower", price: 150, stock: 30, rating: 4.7, image: "rose", icon: "🌹" },
+{ id: 52, name: "Tulip", category: "flower", price: 120, stock: 25, rating: 4.6, image: "tulip", icon: "🌷" },
+{ id: 53, name: "Lily", category: "flower", price: 180, stock: 20, rating: 4.5, image: "lily", icon: "🌸" },
+{ id: 54, name: "Sunflower", category: "flower", price: 200, stock: 15, rating: 4.4, image: "sunflower", icon: "🌻" },
+{ id: 55, name: "Orchid", category: "flower", price: 250, stock: 10, rating: 4.6, image: "orchid", icon: "🌺" },
+
+
+    // Spice
+{ id: 56, name: "Black Pepper", category: "spice", price: 400, stock: 20, rating: 4.5, image: "black_pepper", icon: "🌶️" },
+{ id: 57, name: "Cinnamon", category: "spice", price: 350, stock: 15, rating: 4.6, image: "cinnamon", icon: "🍂" },
+{ id: 58, name: "Turmeric", category: "spice", price: 300, stock: 25, rating: 4.4, image: "turmeric", icon: "🧡" },
+{ id: 59, name: "Cardamom", category: "spice", price: 500, stock: 10, rating: 4.7, image: "cardamom", icon: "🌿" },
+{ id: 60, name: "Clove", category: "spice", price: 450, stock: 12, rating: 4.6, image: "clove", icon: "🧄" },
+
+
+    // Maize
+{ id: 61, name: "Yellow Maize", category: "maize", price: 300, stock: 30, rating: 4.5, image: "yellow_maize", icon: "🌽" },
+{ id: 62, name: "White Maize", category: "maize", price: 320, stock: 25, rating: 4.4, image: "white_maize", icon: "🌽" },
+{ id: 63, name: "Sweet Corn", category: "maize", price: 350, stock: 20, rating: 4.6, image: "sweet_corn", icon: "🌽" },
+{ id: 64, name: "Popcorn", category: "maize", price: 370, stock: 15, rating: 4.7, image: "popcorn", icon: "🍿" },
+{ id: 65, name: "Dent Corn", category: "maize", price: 310, stock: 18, rating: 4.3, image: "dent_corn", icon: "🌽" },
+
+
+    // Mushroom
+{ id: 66, name: "Button Mushroom", category: "mushroom", price: 250, stock: 30, rating: 4.6, image: "button_mushroom", icon: "🍄" },
+{ id: 67, name: "Shiitake Mushroom", category: "mushroom", price: 300, stock: 25, rating: 4.5, image: "shiitake_mushroom", icon: "🍄" },
+{ id: 68, name: "Oyster Mushroom", category: "mushroom", price: 270, stock: 20, rating: 4.4, image: "oyster_mushroom", icon: "🍄" },
+{ id: 69, name: "Portobello Mushroom", category: "mushroom", price: 350, stock: 15, rating: 4.7, image: "portobello_mushroom", icon: "🍄" },
+{ id: 70, name: "Enoki Mushroom", category: "mushroom", price: 320, stock: 18, rating: 4.6, image: "enoki_mushroom", icon: "🍄" },
+
+
+    // Herb
+{ id: 71, name: "Basil", category: "herb", price: 100, stock: 30, rating: 4.5, image: "basil", icon: "🌿" },
+{ id: 72, name: "Mint", category: "herb", price: 90, stock: 25, rating: 4.4, image: "mint", icon: "🌱" },
+{ id: 73, name: "Rosemary", category: "herb", price: 120, stock: 20, rating: 4.6, image: "rosemary", icon: "🌿" },
+{ id: 74, name: "Thyme", category: "herb", price: 110, stock: 18, rating: 4.3, image: "thyme", icon: "🌿" },
+{ id: 75, name: "Parsley", category: "herb", price: 130, stock: 15, rating: 4.5, image: "parsley", icon: "🍃" },
+
+
+    // Betel
+{ id: 76, name: "Betel Leaf", category: "betel", price: 50, stock: 30, rating: 4.4, image: "betel_leaf", icon: "🍃" },
+{ id: 77, name: "Betel Nut", category: "betel", price: 70, stock: 25, rating: 4.5, image: "betel_nut", icon: "🌰" },
+{ id: 78, name: "Betel Vine", category: "betel", price: 80, stock: 20, rating: 4.6, image: "betel_vine", icon: "🍃" },
+{ id: 79, name: "Betel Paan", category: "betel", price: 60, stock: 15, rating: 4.4, image: "betel_paan", icon: "🍃" },
+{ id: 80, name: "Betel Extract", category: "betel", price: 90, stock: 12, rating: 4.3, image: "betel_extract", icon: "🌱" },
+
+// Offers
+{ id: 81, name: "Spring Sale - Apples", category: "offers", price: 80, stock: 50, rating: 4.7, image: "spring_sale_apples", icon: "🍏" },
+{ id: 82, name: "Winter Discounts on Vegetables", category: "offers", price: 40, stock: 30, rating: 4.5, image: "winter_discounts_vegetables", icon: "🥕" },
+{ id: 83, name: "Buy 1 Get 1 Free - Fruits", category: "offers", price: 100, stock: 20, rating: 4.6, image: "buy_1_get_1_fruits", icon: "🍎" },
+{ id: 84, name: "Summer Deals on Seeds", category: "offers", price: 70, stock: 25, rating: 4.4, image: "summer_deals_seeds", icon: "🌱" },
+{ id: 85, name: "Discounted Fertilizers", category: "offers", price: 180, stock: 15, rating: 4.5, image: "discounted_fertilizers", icon: "💲" },
+
+// Agriculture Tools
+{ id: 86, name: "Soil Moisture Meter", category: "agriculture_tools", price: 500, stock: 20, rating: 4.6, image: "soil_moisture_meter", icon: "🌱" },
+{ id: 87, name: "Pruning Shears", category: "agriculture_tools", price: 150, stock: 25, rating: 4.5, image: "pruning_shears", icon: "✂️" },
+{ id: 88, name: "Garden Fork", category: "agriculture_tools", price: 200, stock: 30, rating: 4.7, image: "garden_fork", icon: "🔧" },
+{ id: 89, name: "Soil Tester", category: "agriculture_tools", price: 250, stock: 15, rating: 4.4, image: "soil_tester", icon: "🧪" },
+{ id: 90, name: "Trowel", category: "agriculture_tools", price: 100, stock: 35, rating: 4.6, image: "trowel", icon: "🛠️" },
+
+
+   // Farming Tools
+{ id: 91, name: "Hoe", category: "farming_tools", price: 80, stock: 25, rating: 4.5, image: "hoe", icon: "⛏️" },
+{ id: 92, name: "Sickle", category: "farming_tools", price: 60, stock: 20, rating: 4.4, image: "sickle", icon: "🌾" },
+{ id: 93, name: "Rake", category: "farming_tools", price: 70, stock: 15, rating: 4.6, image: "rake", icon: "🌾" },
+{ id: 94, name: "Spade", category: "farming_tools", price: 90, stock: 18, rating: 4.5, image: "spade", icon: "🛠️" },
+{ id: 95, name: "Cultivator", category: "farming_tools", price: 250, stock: 10, rating: 4.7, image: "cultivator", icon: "🔧" },
+
+// Milk
+{ id: 96, name: "Cow Milk", category: "milk", price: 60, stock: 40, rating: 4.5, image: "cow_milk", icon: "🥛" },
+{ id: 97, name: "Buffalo Milk", category: "milk", price: 70, stock: 35, rating: 4.6, image: "buffalo_milk", icon: "🥛" },
+{ id: 98, name: "Goat Milk", category: "milk", price: 80, stock: 30, rating: 4.4, image: "goat_milk", icon: "🥛" },
+{ id: 99, name: "Almond Milk", category: "milk", price: 120, stock: 20, rating: 4.7, image: "almond_milk", icon: "🥛" },
+{ id: 100, name: "Soy Milk", category: "milk", price: 100, stock: 25, rating: 4.5, image: "soy_milk", icon: "🥛" },
+
+// Eggs
+{ id: 101, name: "Chicken Eggs", category: "eggs", price: 10, stock: 100, rating: 4.6, image: "chicken_eggs", icon: "🥚" },
+{ id: 102, name: "Duck Eggs", category: "eggs", price: 15, stock: 80, rating: 4.5, image: "duck_eggs", icon: "🥚" },
+{ id: 103, name: "Quail Eggs", category: "eggs", price: 20, stock: 60, rating: 4.4, image: "quail_eggs", icon: "🥚" },
+{ id: 104, name: "Ostrich Eggs", category: "eggs", price: 50, stock: 30, rating: 4.7, image: "ostrich_eggs", icon: "🥚" },
+{ id: 105, name: "Turkey Eggs", category: "eggs", price: 25, stock: 40, rating: 4.6, image: "turkey_eggs", icon: "🥚" },
+
+// Cotton
+{ id: 106, name: "Organic Cotton", category: "cotton", price: 150, stock: 25, rating: 4.6, image: "organic_cotton", icon: "🌱" },
+{ id: 107, name: "Conventional Cotton", category: "cotton", price: 120, stock: 30, rating: 4.5, image: "conventional_cotton", icon: "🌿" },
+{ id: 108, name: "Cotton Yarn", category: "cotton", price: 180, stock: 20, rating: 4.7, image: "cotton_yarn", icon: "🧶" },
+{ id: 109, name: "Cotton Fabric", category: "cotton", price: 200, stock: 15, rating: 4.6, image: "cotton_fabric", icon: "👗" },
+{ id: 110, name: "Cotton Seeds", category: "cotton", price: 80, stock: 35, rating: 4.4, image: "cotton_seeds", icon: "🌱" },
+
+   // Jute
+{ id: 111, name: "Jute Fabric", category: "jute", price: 250, stock: 20, rating: 4.5, image: "jute_fabric", icon: "🧶" },
+{ id: 112, name: "Jute Yarn", category: "jute", price: 300, stock: 15, rating: 4.6, image: "jute_yarn", icon: "🧶" },
+{ id: 113, name: "Jute Bags", category: "jute", price: 100, stock: 30, rating: 4.4, image: "jute_bags", icon: "🛍️" },
+{ id: 114, name: "Jute Ropes", category: "jute", price: 150, stock: 25, rating: 4.7, image: "jute_ropes", icon: "🪢" },
+{ id: 115, name: "Jute Twine", category: "jute", price: 120, stock: 20, rating: 4.6, image: "jute_twine", icon: "🧵" },
+
+// Fiber
+{ id: 116, name: "Natural Fiber", category: "fiber", price: 200, stock: 20, rating: 4.5, image: "natural_fiber", icon: "🌾" },
+{ id: 117, name: "Synthetic Fiber", category: "fiber", price: 150, stock: 25, rating: 4.4, image: "synthetic_fiber", icon: "🧵" },
+{ id: 118, name: "Cotton Fiber", category: "fiber", price: 180, stock: 15, rating: 4.6, image: "cotton_fiber", icon: "🌱" },
+{ id: 119, name: "Hemp Fiber", category: "fiber", price: 220, stock: 10, rating: 4.7, image: "hemp_fiber", icon: "🌿" },
+{ id: 120, name: "Jute Fiber", category: "fiber", price: 170, stock: 30, rating: 4.5, image: "jute_fiber", icon: "🌾" },
+
+// Non Organic Food Products
+{ id: 121, name: "Non-Organic Rice", category: "non_organic_food_products", price: 60, stock: 40, rating: 4.4, image: "non_organic_rice", icon: "🍚" },
+{ id: 122, name: "Non-Organic Wheat", category: "non_organic_food_products", price: 55, stock: 35, rating: 4.5, image: "non_organic_wheat", icon: "🌾" },
+{ id: 123, name: "Non-Organic Sugar", category: "non_organic_food_products", price: 70, stock: 30, rating: 4.6, image: "non_organic_sugar", icon: "🍬" },
+{ id: 124, name: "Non-Organic Salt", category: "non_organic_food_products", price: 40, stock: 25, rating: 4.4, image: "non_organic_salt", icon: "🧂" },
+{ id: 125, name: "Non-Organic Oil", category: "non_organic_food_products", price: 100, stock: 20, rating: 4.5, image: "non_organic_oil", icon: "🛢️" },
+
+// Organic Food Products
+{ id: 126, name: "Organic Rice", category: "organic_food_products", price: 80, stock: 30, rating: 4.7, image: "organic_rice", icon: "🍚" },
+{ id: 127, name: "Organic Wheat", category: "organic_food_products", price: 70, stock: 25, rating: 4.6, image: "organic_wheat", icon: "🌾" },
+{ id: 128, name: "Organic Sugar", category: "organic_food_products", price: 90, stock: 20, rating: 4.5, image: "organic_sugar", icon: "🍬" },
+{ id: 129, name: "Organic Salt", category: "organic_food_products", price: 50, stock: 15, rating: 4.4, image: "organic_salt", icon: "🧂" },
+{ id: 130, name: "Organic Oil", category: "organic_food_products", price: 150, stock: 10, rating: 4.6, image: "organic_oil", icon: "🛢️" },
+
+// Pesticides
+{ id: 131, name: "Insecticide", category: "pesticides", price: 200, stock: 30, rating: 4.6, image: "insecticide", icon: "🐜" },
+{ id: 132, name: "Fungicide", category: "pesticides", price: 180, stock: 25, rating: 4.5, image: "fungicide", icon: "🍄" },
+{ id: 133, name: "Herbicide", category: "pesticides", price: 220, stock: 20, rating: 4.7, image: "herbicide", icon: "🌿" },
+{ id: 134, name: "Rodenticide", category: "pesticides", price: 250, stock: 15, rating: 4.4, image: "rodenticide", icon: "🐀" },
+{ id: 135, name: "Plant Growth Regulator", category: "pesticides", price: 300, stock: 10, rating: 4.6, image: "plant_growth_regulator", icon: "🌱" },
+
+// Seeds
+{ id: 136, name: "Corn Seeds", category: "seeds", price: 120, stock: 25, rating: 4.5, image: "corn_seeds", icon: "🌽" },
+{ id: 137, name: "Wheat Seeds", category: "seeds", price: 100, stock: 30, rating: 4.6, image: "wheat_seeds", icon: "🌾" },
+{ id: 138, name: "Rice Seeds", category: "seeds", price: 90, stock: 35, rating: 4.7, image: "rice_seeds", icon: "🍚" },
+{ id: 139, name: "Soybean Seeds", category: "seeds", price: 110, stock: 20, rating: 4.4, image: "soybean_seeds", icon: "🌱" },
+{ id: 140, name: "Barley Seeds", category: "seeds", price: 95, stock: 25, rating: 4.5, image: "barley_seeds", icon: "🌾" },
+
+
+    // Fertilizers
+{ id: 141, name: "Nitrogen Fertilizer", category: "fertilizers", price: 150, stock: 25, rating: 4.5, image: "nitrogen_fertilizer", icon: "💧" },
+{ id: 142, name: "Phosphorus Fertilizer", category: "fertilizers", price: 170, stock: 20, rating: 4.6, image: "phosphorus_fertilizer", icon: "💧" },
+{ id: 143, name: "Potassium Fertilizer", category: "fertilizers", price: 200, stock: 15, rating: 4.7, image: "potassium_fertilizer", icon: "💧" },
+{ id: 144, name: "Calcium Fertilizer", category: "fertilizers", price: 180, stock: 18, rating: 4.4, image: "calcium_fertilizer", icon: "💧" },
+{ id: 145, name: "Organic Fertilizer", category: "fertilizers", price: 220, stock: 12, rating: 4.6, image: "organic_fertilizer", icon: "🌿" },
+
+// Pesticides
+{ id: 146, name: "Organic Pesticide", category: "pesticides", price: 200, stock: 25, rating: 4.6, image: "organic_pesticide", icon: "🐜" },
+{ id: 147, name: "Chemical Pesticide", category: "pesticides", price: 180, stock: 30, rating: 4.5, image: "chemical_pesticide", icon: "⚗️" },
+{ id: 148, name: "Natural Pesticide", category: "pesticides", price: 220, stock: 20, rating: 4.7, image: "natural_pesticide", icon: "🌱" },
+{ id: 149, name: "Herbal Pesticide", category: "pesticides", price: 250, stock: 15, rating: 4.4, image: "herbal_pesticide", icon: "🌿" },
+{ id: 150, name: "Biological Pesticide", category: "pesticides", price: 300, stock: 10, rating: 4.6, image: "biological_pesticide", icon: "🧬" },
+
+// Herbicides
+{ id: 156, name: "Selective Herbicide", category: "herbicides", price: 180, stock: 25, rating: 4.6, image: "selective_herbicide", icon: "🌿" },
+{ id: 157, name: "Pre-Emergent Herbicide", category: "herbicides", price: 200, stock: 20, rating: 4.5, image: "pre_emergent_herbicide", icon: "🌱" },
+{ id: 158, name: "Post-Emergent Herbicide", category: "herbicides", price: 220, stock: 15, rating: 4.7, image: "post_emergent_herbicide", icon: "🌿" },
+{ id: 159, name: "Non-Selective Herbicide", category: "herbicides", price: 250, stock: 10, rating: 4.4, image: "non_selective_herbicide", icon: "🌿" },
+{ id: 160, name: "Contact Herbicide", category: "herbicides", price: 230, stock: 12, rating: 4.6, image: "contact_herbicide", icon: "🖐️" },
+
+// Compost
+{ id: 161, name: "Organic Compost", category: "compost", price: 120, stock: 30, rating: 4.7, image: "organic_compost", icon: "🌱" },
+{ id: 162, name: "Green Compost", category: "compost", price: 100, stock: 25, rating: 4.6, image: "green_compost", icon: "🌿" },
+{ id: 163, name: "Manure Compost", category: "compost", price: 90, stock: 20, rating: 4.5, image: "manure_compost", icon: "🦠" },
+{ id: 164, name: "Vermicompost", category: "compost", price: 110, stock: 15, rating: 4.7, image: "vermicompost", icon: "🐛" },
+{ id: 165, name: "Peat Compost", category: "compost", price: 130, stock: 12, rating: 4.4, image: "peat_compost", icon: "🌍" },
+
+// Irrigation System
+{ id: 166, name: "Drip Irrigation System", category: "irrigation_system", price: 300, stock: 20, rating: 4.6, image: "drip_irrigation_system", icon: "💧" },
+{ id: 167, name: "Sprinkler System", category: "irrigation_system", price: 250, stock: 25, rating: 4.5, image: "sprinkler_system", icon: "💦" },
+{ id: 168, name: "Soaker Hose", category: "irrigation_system", price: 150, stock: 30, rating: 4.7, image: "soaker_hose", icon: "💧" },
+{ id: 169, name: "Rain Gun", category: "irrigation_system", price: 200, stock: 15, rating: 4.4, image: "rain_gun", icon: "🌧️" },
+{ id: 170, name: "Irrigation Controller", category: "irrigation_system", price: 220, stock: 12, rating: 4.6, image: "irrigation_controller", icon: "🔧" },
+
+
+   // Fungicides
+{ id: 171, name: "Broad-Spectrum Fungicide", category: "fungicides", price: 180, stock: 25, rating: 4.5, image: "broad_spectrum_fungicide", icon: "🦠" },
+{ id: 172, name: "Systemic Fungicide", category: "fungicides", price: 200, stock: 20, rating: 4.6, image: "systemic_fungicide", icon: "🦠" },
+{ id: 173, name: "Contact Fungicide", category: "fungicides", price: 220, stock: 15, rating: 4.7, image: "contact_fungicide", icon: "🦠" },
+{ id: 174, name: "Protective Fungicide", category: "fungicides", price: 230, stock: 10, rating: 4.4, image: "protective_fungicide", icon: "🛡️" },
+{ id: 175, name: "Curative Fungicide", category: "fungicides", price: 240, stock: 12, rating: 4.6, image: "curative_fungicide", icon: "🩹" },
+
+// Greenhouse Material
+{ id: 176, name: "Greenhouse Plastic Film", category: "greenhouse_material", price: 300, stock: 15, rating: 4.7, image: "greenhouse_plastic_film", icon: "🏠" },
+{ id: 177, name: "Greenhouse Shade Net", category: "greenhouse_material", price: 250, stock: 20, rating: 4.5, image: "greenhouse_shade_net", icon: "🌞" },
+{ id: 178, name: "Greenhouse Frame", category: "greenhouse_material", price: 400, stock: 10, rating: 4.6, image: "greenhouse_frame", icon: "🛠️" },
+{ id: 179, name: "Ventilation System", category: "greenhouse_material", price: 350, stock: 12, rating: 4.4, image: "ventilation_system", icon: "🌬️" },
+{ id: 180, name: "Greenhouse Heater", category: "greenhouse_material", price: 500, stock: 8, rating: 4.7, image: "greenhouse_heater", icon: "🔥" },
+
+// Soil Conditioners
+{ id: 181, name: "Lime Soil Conditioner", category: "soil_conditioners", price: 160, stock: 30, rating: 4.5, image: "lime_soil_conditioner", icon: "🪴" },
+{ id: 182, name: "Gypsum Soil Conditioner", category: "soil_conditioners", price: 180, stock: 25, rating: 4.6, image: "gypsum_soil_conditioner", icon: "🪴" },
+{ id: 183, name: "Organic Soil Conditioner", category: "soil_conditioners", price: 200, stock: 20, rating: 4.7, image: "organic_soil_conditioner", icon: "🌱" },
+{ id: 184, name: "Sulfur Soil Conditioner", category: "soil_conditioners", price: 190, stock: 15, rating: 4.4, image: "sulfur_soil_conditioner", icon: "⚗️" },
+{ id: 185, name: "Compost Tea", category: "soil_conditioners", price: 220, stock: 12, rating: 4.6, image: "compost_tea", icon: "🍵" },
+
+// Mulch
+{ id: 186, name: "Wood Chip Mulch", category: "mulch", price: 120, stock: 30, rating: 4.6, image: "wood_chip_mulch", icon: "🌲" },
+{ id: 187, name: "Straw Mulch", category: "mulch", price: 100, stock: 25, rating: 4.5, image: "straw_mulch", icon: "🌾" },
+{ id: 188, name: "Rubber Mulch", category: "mulch", price: 140, stock: 20, rating: 4.7, image: "rubber_mulch", icon: "🪠" },
+{ id: 189, name: "Bark Mulch", category: "mulch", price: 130, stock: 15, rating: 4.4, image: "bark_mulch", icon: "🌳" },
+{ id: 190, name: "Organic Mulch", category: "mulch", price: 150, stock: 12, rating: 4.6, image: "organic_mulch", icon: "🌿" },
+
+// Tractor Parts
+{ id: 191, name: "Tractor Tire", category: "tractor_parts", price: 500, stock: 10, rating: 4.7, image: "tractor_tire", icon: "🚜" },
+{ id: 192, name: "Tractor Engine", category: "tractor_parts", price: 1500, stock: 5, rating: 4.6, image: "tractor_engine", icon: "⚙️" },
+{ id: 193, name: "Tractor Plow", category: "tractor_parts", price: 700, stock: 8, rating: 4.5, image: "tractor_plow", icon: "⛽" },
+{ id: 194, name: "Tractor Battery", category: "tractor_parts", price: 200, stock: 12, rating: 4.4, image: "tractor_battery", icon: "🔋" },
+{ id: 195, name: "Tractor Hitch", category: "tractor_parts", price: 350, stock: 15, rating: 4.6, image: "tractor_hitch", icon: "🔧" },
+
+// Plowing Tools
+{ id: 196, name: "Manual Plow", category: "plowing_tools", price: 180, stock: 20, rating: 4.5, image: "manual_plow", icon: "🪓" },
+{ id: 197, name: "Tractor Plow", category: "plowing_tools", price: 500, stock: 15, rating: 4.6, image: "tractor_plow", icon: "🚜" },
+{ id: 198, name: "Walk-Behind Plow", category: "plowing_tools", price: 300, stock: 10, rating: 4.7, image: "walk_behind_plow", icon: "🚶" },
+{ id: 199, name: "Hydraulic Plow", category: "plowing_tools", price: 800, stock: 8, rating: 4.4, image: "hydraulic_plow", icon: "🔩" },
+{ id: 200, name: "Rotary Plow", category: "plowing_tools", price: 650, stock: 12, rating: 4.6, image: "rotary_plow", icon: "🔄" },
+
+
+   // Harvesting Tools
+{ id: 201, name: "Hand Harvester", category: "harvesting_tools", price: 120, stock: 25, rating: 4.7, image: "✂️" },
+{ id: 202, name: "Combine Harvester", category: "harvesting_tools", price: 1500, stock: 5, rating: 4.6, image: "🚜" },
+{ id: 203, name: "Reaper", category: "harvesting_tools", price: 800, stock: 10, rating: 4.5, image: "🪓" },
+{ id: 204, name: "Threshing Machine", category: "harvesting_tools", price: 700, stock: 8, rating: 4.4, image: "⚙️" },
+{ id: 205, name: "Cutting Blade", category: "harvesting_tools", price: 200, stock: 15, rating: 4.6, image: "🔪" },
+
+// Watering Cans
+{ id: 206, name: "Plastic Watering Can", category: "watering_cans", price: 25, stock: 40, rating: 4.5, image: "🌱" },
+{ id: 207, name: "Metal Watering Can", category: "watering_cans", price: 35, stock: 30, rating: 4.6, image: "🪣" },
+{ id: 208, name: "Adjustable Watering Can", category: "watering_cans", price: 30, stock: 35, rating: 4.7, image: "🌿" },
+{ id: 209, name: "Large Watering Can", category: "watering_cans", price: 45, stock: 25, rating: 4.4, image: "💧" },
+{ id: 210, name: "Watering Can with Sprayer", category: "watering_cans", price: 50, stock: 20, rating: 4.6, image: "🚿" },
+
+// Plant Plots
+{ id: 211, name: "Raised Garden Bed", category: "plant_plots", price: 100, stock: 15, rating: 4.7, image: "🌾" },
+{ id: 212, name: "Greenhouse Planter", category: "plant_plots", price: 150, stock: 10, rating: 4.6, image: "🏡" },
+{ id: 213, name: "Vertical Planter", category: "plant_plots", price: 80, stock: 20, rating: 4.5, image: "🪴" },
+{ id: 214, name: "Container Garden Kit", category: "plant_plots", price: 90, stock: 25, rating: 4.4, image: "🛍️" },
+{ id: 215, name: "Hydroponic Planter", category: "plant_plots", price: 200, stock: 12, rating: 4.6, image: "💧" },
+
+
+    // Landscape Materials
+    { id: 216, name: "Garden Soil", category: "landscape_materials", price: 40, stock: 30, rating: 4.6, image: "🪴" },
+    { id: 217, name: "Landscaping Stones", category: "landscape_materials", price: 60, stock: 25, rating: 4.5, image: "🪨"  },
+    { id: 218, name: "Mulch Mats", category: "landscape_materials", price: 30, stock: 20, rating: 4.7, image: "🌱" },
+    { id: 219, name: "Garden Edging", category: "landscape_materials", price: 50, stock: 15, rating: 4.4, image: "🔳" },
+    { id: 220, name: "Decorative Gravel", category: "landscape_materials", price: 70, stock: 10, rating: 4.6, image: "🌕" },
+
+    // Animal Husbandry
+    { id: 221, name: "Feed for Cattle", category: "animal_husbandry", price: 100, stock: 30, rating: 4.6, image: "🐄" },
+    { id: 222, name: "Chicken Coop", category: "animal_husbandry", price: 300, stock: 10, rating: 4.7, image: "🐓" },
+    { id: 223, name: "Pig Feed", category: "animal_husbandry", price: 80, stock: 25, rating: 4.5, image: "🐖" },
+    { id: 224, name: "Horse Bedding", category: "animal_husbandry", price: 70, stock: 20, rating: 4.6, image: "🐎" },
+    { id: 225, name: "Barn Supplies", category: "animal_husbandry", price: 200, stock: 15, rating: 4.4, image: "🏠" },
+
+    // Beekeeping
+    { id: 226, name: "Beehive", category: "beekeeping", price: 150, stock: 20, rating: 4.7, image: "🐝" },
+    { id: 227, name: "Beekeeping Suit", category: "beekeeping", price: 120, stock: 25, rating: 4.6, image: "🛡️" },
+    { id: 228, name: "Honey Extractor", category: "beekeeping", price: 250, stock: 15, rating: 4.5, image: "🍯" },
+    { id: 229, name: "Bee Feed", category: "beekeeping", price: 80, stock: 30, rating: 4.6, image: "🌼" },
+    { id: 230, name: "Bee Smoker", category: "beekeeping", price: 40, stock: 35, rating: 4.7, image: "🚬" },
+
+    // Fish Farming
+    { id: 231, name: "Aquaculture Tank", category: "fish_farming", price: 500, stock: 10, rating: 4.6, image: "🐟" },
+    { id: 232, name: "Fish Feed", category: "fish_farming", price: 150, stock: 20, rating: 4.7, image: "🍤" },
+    { id: 233, name: "Water Aerator", category: "fish_farming", price: 200, stock: 15, rating: 4.5, image: "💦" },
+    { id: 234, name: "Fish Net", category: "fish_farming", price: 100, stock: 25, rating: 4.6, image: "🕸️" },
+    { id: 235, name: "Aquaculture Supplies", category: "fish_farming", price: 300, stock: 12, rating: 4.4, image: "📦" },
+
+    // Aquaculture Supplies
+    { id: 236, name: "Algae Control", category: "aquaculture_supplies", price: 180, stock: 25, rating: 4.6, image: "🧪" },
+    { id: 237, name: "Water Quality Test Kit", category: "aquaculture_supplies", price: 120, stock: 20, rating: 4.5, image: "🌊" },
+    { id: 238, name: "Fish Oxygenator", category: "aquaculture_supplies", price: 250, stock: 15, rating: 4.7, image: "💨" },
+    { id: 239, name: "Aquatic Plants", category: "aquaculture_supplies", price: 60, stock: 30, rating: 4.4, image: "🌱" },
+    { id: 240, name: "Fish Breeding Kit", category: "aquaculture_supplies", price: 200, stock: 10, rating: 4.6, image: "🐠" },
+
+    // Daily Products
+    { id: 241, name: "Daily Harvest Vegetables", category: "daily_products", price: 50, stock: 40, rating: 4.7, image: "🥕" },
+    { id: 242, name: "Fresh Fruits", category: "daily_products", price: 70, stock: 35, rating: 4.6, image: "🍎" },
+    { id: 243, name: "Organic Eggs", category: "daily_products", price: 30, stock: 50, rating: 4.5, image: "🥚" },
+    { id: 244, name: "Farm Milk", category: "daily_products", price: 60, stock: 45, rating: 4.7, image: "🥛" },
+    { id: 245, name: "Homemade Cheese", category: "daily_products", price: 80, stock: 20, rating: 4.6, image: "🧀" },
+
+    // Poultry Products
+    { id: 246, name: "Chicken Feed", category: "poultry_products", price: 90, stock: 30, rating: 4.5, image: "🐓" },
+    { id: 247, name: "Duck Feed", category: "poultry_products", price: 100, stock: 25, rating: 4.6, image: "🦆" },
+    { id: 248, name: "Poultry Vitamins", category: "poultry_products", price: 50, stock: 40, rating: 4.7, image: "💊" },
+    { id: 249, name: "Broiler Chicks", category: "poultry_products", price: 200, stock: 15, rating: 4.4, image: "🐤" },
+    { id: 250, name: "Poultry Nesting Boxes", category: "poultry_products", price: 80, stock: 20, rating: 4.6, image: "📦" },
+
+    // Livestock Feed
+    { id: 251, name: "Cow Feed", category: "livestock_feed", price: 120, stock: 25, rating: 4.6, image: "🐄" },
+    { id: 252, name: "Sheep Feed", category: "livestock_feed", price: 100, stock: 30, rating: 4.5, image: "🐑" },
+    { id: 253, name: "Goat Feed", category: "livestock_feed", price: 90, stock: 35, rating: 4.7, image: "🐐" },
+    { id: 254, name: "Horse Feed", category: "livestock_feed", price: 150, stock: 20, rating: 4.6, image: "🐎" },
+    { id: 255, name: "Pig Feed", category: "livestock_feed", price: 80, stock: 25, rating: 4.4, image: "🐖" },
+
+    // Crop Protection
+    { id: 256, name: "Pesticides", category: "crop_protection", price: 100, stock: 30, rating: 4.6, image: "🛡️" },
+    { id: 257, name: "Insecticides", category: "crop_protection", price: 120, stock: 25, rating: 4.7, image: "🐛" },
+    { id: 258, name: "Fungicides", category: "crop_protection", price: 130, stock: 20, rating: 4.5, image: "🍄" },
+    { id: 259, name: "Herbicides", category: "crop_protection", price: 110, stock: 30, rating: 4.6, image: "🌿" },
+    { id: 260, name: "Rodenticides", category: "crop_protection", price: 90, stock: 35, rating: 4.4, image: "🐀" },
+
+    // Soil Testing
+    { id: 261, name: "Soil pH Meter", category: "soil_testing", price: 80, stock: 40, rating: 4.7, image: "📏" },
+    { id: 262, name: "Moisture Meter", category: "soil_testing", price: 70, stock: 35, rating: 4.6, image: "💧" },
+    { id: 263, name: "Nutrient Analyzer", category: "soil_testing", price: 150, stock: 20, rating: 4.5, image: "🔬" },
+    { id: 264, name: "Soil Test Kit", category: "soil_testing", price: 100, stock: 30, rating: 4.6, image: "🧪" },
+    { id: 265, name: "Soil Texture Analyzer", category: "soil_testing", price: 200, stock: 15, rating: 4.7, image: "🌍" }
+  ];
+
+let cart = [];
+let wishlist = [];
+let orderHistory = [];
+
+function displayProducts(productsToDisplay) {
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = '';
+
+    productsToDisplay.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.innerHTML = `
+                        <div class="icon">${product.icon}</div>
+
+            <h3>${product.name}</h3>
+            <p>Price: ₹${product.price}</p>
+            <p class="stock">Stock: ${product.stock}</p>
+            <p class="rating">Rating: ${product.rating} / 5</p>
+            <p class="quantity">
+                <label for="quantity-${product.id}">Quantity: </label>
+                <input type="number" id="quantity-${product.id}" value="${product.quantity}" min="1" max="${product.stock}">
+            </p>
+            <button onclick="addToCart(${product.id})" ${product.stock <= 0 ? 'disabled' : ''}>Add to Cart</button>
+            <button class="wishlist-btn" onclick="addToWishlist(${product.id})">Add to Wishlist</button>
+        `;
+        productList.appendChild(productDiv);
+    });
+}
+
+function addToCart(productId) {
+    // Find the product by its ID from the products list
+    const product = products.find(p => p.id === productId);
+    
+    // Use template literals to dynamically access the correct quantity input element
+    const quantityElement = document.getElementById(`quantity-${productId}`);
+    
+    // Parse the quantity entered by the user as an integer
+    const quantity = parseInt(quantityElement.value, 10);
+    
+    // Check if product exists, there is enough stock, and quantity is valid
+    if (product && product.stock >= quantity && quantity > 0) {
+        // Add the product to the cart multiple times, based on the quantity
+        for (let i = 0; i < quantity; i++) {
+            cart.push(product);
+        }
+
+        // Decrease the product's stock by the quantity added to the cart
+        product.stock -= quantity;
+
+        // Update the cart and refresh the product display to reflect updated stock
+        updateCart();
+        displayProducts(products);
+    } else {
+        // Show an alert if the product is out of stock or invalid quantity is entered
+        alert('Sorry, this product is out of stock or invalid quantity.');
+    }
+}
+
+
+function addToWishlist(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product && !wishlist.some(p => p.id === productId)) {
+        wishlist.push(product);
+        updateWishlist();
+    }
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(p => p.id !== productId);
+    updateCart();
+}
+
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const total = document.getElementById('total');
+    cartItems.innerHTML = '';
+
+    let totalAmount = 0;
+
+    cart.forEach((product, index) => {
+        const cartItem = document.createElement('li');
+        cartItem.innerHTML = `${product.name} - ₹${product.price}`;
+        cartItems.appendChild(cartItem);
+        totalAmount += product.price;
+    });
+
+    total.innerHTML = `Total: ₹${totalAmount.toFixed(2)}`;
+}
+
+function updateWishlist() {
+    const wishlistItems = document.getElementById('wishlist-items');
+    wishlistItems.innerHTML = '';
+
+    wishlist.forEach(product => {
+        const wishlistItem = document.createElement('li');
+        wishlistItem.innerHTML = `${product.name}`;
+        wishlistItems.appendChild(wishlistItem);
+    });
+}
+
+function proceedToBuy() {
+    document.getElementById('order-summary').style.display = 'block';
+    const totalAmount = cart.reduce((sum, product) => sum + product.price, 0);
+    document.getElementById('final-amount').innerHTML = `₹${totalAmount.toFixed(2)}`;
+}
+
+function placeOrder() {
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
+    const phone = document.getElementById('phone').value;
+    const pincode = document.getElementById('pincode').value;
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+    if (name && address && phone && pincode && paymentMethod) {
+        const orderDetails = {
+            name,
+            address,
+            phone,
+            pincode,
+            paymentMethod,
+            items: [...cart],
+        };
+        orderHistory.push(orderDetails);
+        cart = [];
+        updateCart();
+        alert('Your order has been placed successfully!');
+        displayOrderHistory();
+        document.getElementById('order-summary').style.display = 'none';
+    } else {
+        alert('Please fill out all the fields.');
+    }
+}
+
+function displayOrderHistory() {
+    const orderHistoryItems = document.getElementById('order-history-items');
+    orderHistoryItems.innerHTML = '';
+
+    orderHistory.forEach((order, index) => {
+        const orderDiv = document.createElement('div');
+        orderDiv.classList.add('order');
+        orderDiv.innerHTML = `
+            <h4>Order #${index + 1}</h4>
+            <ul>
+                ${order.items.map(item => `<li>${item.name} - ₹${item.price}</li>`).join('')}
+            </ul>
+            <p><strong>Total: ₹${order.items.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</strong></p>
+            <p><strong>Delivery to:</strong> ${order.name}, ${order.address}, ${order.phone}, ${order.pincode}</p>
+            <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+        `;
+        orderHistoryItems.appendChild(orderDiv);
+    });
+}
+
+// Initial product display
+displayProducts(products);
+
+// Filtering functionality
+function filterByCategory() {
+    const selectedCategory = document.getElementById('category-filter').value;
+    if (selectedCategory === 'all') {
+        displayProducts(products);
+    } else {
+        const filteredProducts = products.filter(product => product.category === selectedCategory);
+        displayProducts(filteredProducts);
+    }
+}
+
+// Search functionality
+function searchProducts() {
+    const searchInput = document.getElementById('search-input').value.toLowerCase();
+    const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchInput));
+    displayProducts(filteredProducts);
+}
+</script>
+
+<footer>
+    <p>Explore more: <a href="community-forum.html">Community Forum</a></p>
+    <a href="javascript:void(0);" onclick="goBack()" class="back-button">Back</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+    
+</footer>
+
+</body>
+</html>

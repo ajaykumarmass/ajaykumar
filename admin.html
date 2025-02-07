@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Agriculture Information Hub</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Background Animation */
+        body {
+            background: linear-gradient(45deg, #3498db, #8e44ad, #f39c12, #2ecc71);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            font-family: 'Arial', sans-serif;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: white;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 3rem;
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Login Form */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+
+        .login-form input {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        .login-form button {
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+        }
+
+        section#admin {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        section#admin h2 {
+            font-size: 2.5rem;
+            color: #ecf0f1;
+            margin-bottom: 15px;
+        }
+
+        #logged-in-users {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #logged-in-users li {
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        #logged-in-users li:hover {
+            transform: scale(1.05);
+        }
+
+        #logged-in-users li span {
+            background-color: #2ecc71;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        #logged-in-users li button {
+            padding: 5px 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #logged-in-users li button:hover {
+            background-color: #c0392b;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            color: #ecf0f1;
+        }
+
+        footer p {
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .user-count {
+            background: #f39c12;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Back Button */
+        .back-button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #c0392b;
+        }
+        
+         /* Admin Info Display */
+        .admin-info {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        /* Change Admin Credentials Form */
+        .change-credentials-form {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .change-credentials-form input {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+        </header>
+
+        <!-- Admin Login Form -->
+        <div class="login-form" id="loginForm">
+            <h2>Login to Admin</h2>
+            <input type="text" id="adminUsername" placeholder="Enter Username" required>
+            <input type="password" id="adminPassword" placeholder="Enter Password" required>
+            <button onclick="login()">Login</button>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div class="admin-dashboard" id="adminDashboard">
+            <button class="back-button" onclick="goBack()">Back to Login</button>
+            <div class="admin-info" id="adminInfo"></div>
+            <div class="user-count" id="userCount"></div>
+
+            <section id="admin">
+                <h2>Logged-In Users</h2>
+                <ul id="logged-in-users"></ul>
+            </section>
+
+            <section class="change-credentials-form">
+                <h2>Change Admin Credentials</h2>
+                <input type="text" id="newAdminUsername" placeholder="New Username">
+                <input type="password" id="newAdminPassword" placeholder="New Password">
+                <button onclick="changeCredentials()">Update Credentials</button>
+            </section>
+
+            <footer>
+                <p>Agriculture Information Hub - Admin Panel</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let defaultAdmin = {
+            username: 'admin',
+            password: 'admin123',
+        };
+
+        // Load credentials from localStorage or use default
+        const storedAdmin = JSON.parse(localStorage.getItem('adminCredentials')) || defaultAdmin;
+
+        function login() {
+            const enteredUsername = document.getElementById('adminUsername').value;
+            const enteredPassword = document.getElementById('adminPassword').value;
+
+            if (enteredUsername === storedAdmin.username && enteredPassword === storedAdmin.password) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('adminInfo').textContent = `Welcome, ${storedAdmin.username}!`;
+                updateUserList();
+            } else {
+                alert('Invalid admin credentials!');
+            }
+        }
+
+        function goBack() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+
+        function changeCredentials() {
+            const newUsername = document.getElementById('newAdminUsername').value;
+            const newPassword = document.getElementById('newAdminPassword').value;
+        
+            if (newUsername && newPassword) {
+                storedAdmin.username = newUsername;
+                storedAdmin.password = newPassword;
+                localStorage.setItem('adminCredentials', JSON.stringify(storedAdmin));
+                alert('Admin credentials updated successfully!');
+        
+                // Hide the input fields and show a success message with a "Reset" button
+                const credentialsForm = document.querySelector('.change-credentials-form');
+                credentialsForm.innerHTML = `
+                    <h2>Change Admin Credentials</h2>
+                    <p>Admin credentials have been updated successfully.</p>
+                    <button onclick="showChangeCredentialsForm()">Edit Again</button>
+                `;
+                document.getElementById('adminInfo').textContent = `Welcome, ${storedAdmin.username}!`;
+            } else {
+                alert('Please provide both username and password.');
+            }
+        }
+        
+        // Function to reset the "Change Admin Credentials" form
+        function showChangeCredentialsForm() {
+            const credentialsForm = document.querySelector('.change-credentials-form');
+            credentialsForm.innerHTML = `
+                <h2>Change Admin Credentials</h2>
+                <input type="text" id="newAdminUsername" placeholder="New Username">
+                <input type="password" id="newAdminPassword" placeholder="New Password">
+                <button onclick="changeCredentials()">Update Credentials</button>
+            `;
+        }
+        
+
+        function removeUser(index) {
+            const loggedInUsers = JSON.parse(localStorage.getItem('loggedInUsers')) || [];
+            loggedInUsers.splice(index, 1);
+            localStorage.setItem('loggedInUsers', JSON.stringify(loggedInUsers));
+            updateUserList();
+        }
+
+        function updateUserList() {
+            const loggedInUsers = JSON.parse(localStorage.getItem('loggedInUsers')) || [];
+            const userList = document.getElementById('logged-in-users');
+            const userCount = document.getElementById('userCount');
+            userCount.textContent = `Total Logged-in Users: ${loggedInUsers.length}`;
+
+            userList.innerHTML = loggedInUsers.length > 0
+                ? loggedInUsers.map((user, index) => `
+                    <li>
+                        ${user} <span>Active</span>
+                        <button onclick="removeUser(${index})">Remove</button>
+                    </li>
+                `).join('')
+                : '<li>No users have logged in yet.</li>';
+        }
+    </script>
+</body>
+</html>
