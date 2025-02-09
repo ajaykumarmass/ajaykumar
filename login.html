@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Agriculture Information Hub</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Animated Background */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #56ccf2, #2f80ed, #76b852, #f4d03f);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #444;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 14px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #dcdde1;
+            border-radius: 10px;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        .admin-link {
+            margin-top: 10px;
+            display: block;
+            color: #3498db;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .admin-link:hover {
+            color: #2980b9;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: #34495e;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Included -->
+        <img src="https://as2.ftcdn.net/v2/jpg/03/30/55/29/1000_F_330552978_FISNd0RnD3QREyIRlGV2iF3v9tdVhpnm.jpg" alt="Agriculture Image">
+        
+        <header>
+            <h1>Login</h1>
+        </header>
+
+        <section id="login">
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <input type="submit" value="Login">
+            </form>
+        </section>
+
+        <!-- Admin Login Link -->
+        <a href="admin.html" class="admin-link">Admin Login</a>
+
+        <footer>
+            <p>Agriculture Information Hub</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form data
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+
+            // Get the registered users from localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let existingUser = users.find(user => user.username === username && user.password === password);
+
+            if (existingUser) {
+                alert('Login successful!');
+                
+                // Track logged-in users
+                let loggedInUsers = JSON.parse(localStorage.getItem('loggedInUsers')) || [];
+                if (!loggedInUsers.includes(username)) {
+                    loggedInUsers.push(username);
+                }
+                localStorage.setItem('loggedInUsers', JSON.stringify(loggedInUsers));
+
+                // Redirect to the Agri Chat Bot  page
+                window.location.href = 'agri chat bot.html';
+            } else {
+                alert('Invalid username or password.');
+            }
+        });
+    </script>
+</body>
+</html>

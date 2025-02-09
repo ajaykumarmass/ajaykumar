@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Information Hub</title>
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Google Fonts & Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2E8B57, #1E6D40);
+            color: white;
+            transition: background 0.3s;
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .section:hover {
+            transform: scale(1.03);
+        }
+        .section h2 {
+            color: #2E8B57;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #2E8B57;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1E6D40;
+        }
+         .dark-mode {
+            background: #222;
+            color: white;
+        }
+        .dark-mode .section {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        #map {
+            width: 100%;
+            height: 300px;
+        }
+        .extra-info {
+            display: none;
+            margin-top: 10px;
+        }
+          /* Style for the back button */
+        .back-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #c9302c;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    🌾 Agriculture Information Hub - Future Trends 🚜
+    <button onclick="toggleDarkMode()">🌙</button>
+</header>
+
+<div class="container">
+    
+    <!-- Direct Farmer-Consumer Connectivity -->
+    <div class="section">
+        <h2><i class="fas fa-store icon"></i> Direct Farmer-Consumer Connectivity</h2>
+        <p>Farmers can sell their produce directly to consumers, ensuring fair prices and eliminating middlemen.</p>
+        <button onclick="toggleContent('farmerConsumerInfo')">Learn More</button>
+        <div id="farmerConsumerInfo" class="extra-info">
+            <p><strong>Benefits:</strong></p>
+            <ul>
+                <li>Increases farmer income by eliminating intermediaries.</li>
+                <li>Consumers get access to fresh and organic produce.</li>
+                <li>Strengthens the local agricultural economy.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Interactive Farm Maps -->
+    <div class="section">
+        <h2>Farms Near You 📍</h2>
+        <p>Check out farms near you and get fresh produce.</p>
+        <div id="map"></div>
+    </div>
+
+    <!-- Financial Support for Farmers -->
+    <div class="section">
+        <h2><i class="fas fa-hand-holding-usd icon"></i> Financial Support for Farmers</h2>
+        <p>Get access to government subsidies, bank loans, and private grants.</p>
+        <button onclick="toggleContent('financialSupport')">View Details</button>
+        <div id="financialSupport" class="extra-info">
+            <p><strong>Types of Support:</strong></p>
+            <ul>
+                <li><strong>Subsidized Loans:</strong> Low-interest farm loans to purchase equipment.</li>
+                <li><strong>Government Grants:</strong> Funding for sustainable and organic farming.</li>
+                <li><strong>Crop Insurance:</strong> Protects against unpredictable weather and crop failure.</li>
+            </ul>
+        </div>
+    </div>
+
+     <!-- Predictive Analytics -->
+    <div class="section">
+        <h2><i class="fas fa-chart-line icon"></i> Predictive Analytics</h2>
+        <p>AI-driven analytics to predict crop yields, pricing trends, and optimal harvesting times.</p>
+        <button onclick="toggleContent('predictiveAnalytics')">Get Predictions</button>
+        <div id="predictiveAnalytics" class="extra-info">
+            <p><strong>How it Works:</strong></p>
+            <ul>
+                <li>Uses weather data and soil conditions for yield predictions.</li>
+                <li>Provides insights on the best time to plant and harvest.</li>
+                <li>Recommends strategies to improve crop productivity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Weather Updates -->
+    <div class="section">
+        <h2>Weather Updates 🌦️</h2>
+        <p id="weatherInfo">Fetching weather data...</p>
+        <button onclick="fetchWeather()">Get Weather</button>
+    </div>
+     
+    <!-- Smart Reminders -->
+<div class="section">
+    <h2><i class="fas fa-bell icon"></i> Smart Farming Reminders</h2>
+    <button onclick="showReminderAlert()">Check Alerts</button>
+    <p id="reminderInfo"></p>
+</div>
+    
+     <!-- AI Chatbot -->
+    <div class="section">
+        <h2><i class="fas fa-robot icon"></i> AI Farming Assistant</h2>
+        <p>Ask the AI assistant for real-time farming guidance.</p>
+        <p><strong>Examples:</strong></p>
+        <ul>
+            <li>Best time to plant crops based on soil and climate.</li>
+            <li>How to prevent common crop diseases.</li>
+            <li>Guidance on organic farming techniques.</li>
+        </ul>
+        <button onclick="toggleContent('chatbotResponse')">Chat with AI</button>
+        <div id="chatbotResponse" class="extra-info">
+            <p>AI: The best time to plant wheat is between October and December. Ask me anything about farming!</p>
+        </div>
+    </div>
+
+    <!-- Agriculture News -->
+    <div class="section">
+        <h2><i class="fas fa-newspaper icon"></i> Agriculture News</h2>
+        <p>Stay updated with the latest developments in the agricultural sector.</p>
+        <p><strong>Recent Headlines:</strong></p>
+        <ul>
+            <li>🌍 India to introduce new agricultural policies in 2025.</li>
+            <li>🚜 Advances in AI-powered farming to boost productivity.</li>
+            <li>🌱 Organic farming trends are gaining momentum worldwide.</li>
+        </ul>
+        <button onclick="toggleContent('newsContent')">Get Latest News</button>
+        <div id="newsContent" class="extra-info">
+            <p>Read about the latest advancements in agricultural technology, government policies, and market trends.</p>
+        </div>
+    </div>
+
+    <!-- Crop Disease Detector -->
+    <div class="section">
+        <h2><i class="fas fa-seedling icon"></i> Crop Disease Detector</h2>
+        <p>AI-powered image recognition to detect crop diseases early.</p>
+        <p><strong>How it Works:</strong></p>
+        <ul>
+            <li>Upload an image of your affected crop.</li>
+            <li>The AI system analyzes for potential diseases.</li>
+            <li>Get recommended treatment solutions instantly.</li>
+        </ul>
+        <button onclick="toggleContent('cropDisease')">Scan Your Crop</button>
+        <div id="cropDisease" class="extra-info">
+            <p>Upload an image of your crop, and our AI will detect any possible diseases. Early detection helps prevent further spread and increases yield.</p>
+        </div>
+    </div>
+</div>
+
+    <!-- Farming Tips -->
+    <div class="section">
+        <h2>Farming Tips 🌱</h2>
+        <p>🔹 Rotate crops to improve soil health.</p>
+        <p>🔹 Use organic fertilizers for better yield.</p>
+        <p>🔹 Monitor soil moisture to optimize irrigation.</p>
+    </div>
+
+    <!-- Market Prices -->
+    <div class="section">
+        <h2>Market Prices 📈</h2>
+        <ul id="marketUpdates"></ul>
+        <button onclick="updateMarketList()">Update Prices</button>
+    </div>
+
+    <!-- Share Your Feedback -->
+    <div class="section">
+        <h2>Share Your Feedback 📝</h2>
+        <p>We value your input! Please share your experience with us.</p>
+        <button onclick="window.location.href='feed-back.html'">Go to Feedback Form</button>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    function fetchWeather() {
+        document.getElementById("weatherInfo").innerText = "🌤️ Today's Weather: Sunny, 30°C";
+    }
+    
+     // Function to display content and play alert sound
+    function showReminderAlert() {
+        // Content for the reminder
+        const reminderContent = '🌾 Next Wheat Plantation: March 15, 2025 | 🌦️ Rain Expected Next Week | 🌱 Fertilizer Application for Corn: March 5, 2025 | 🌞 Irrigation Needed for Tomatoes: March 3, 2025';
+
+        // Display content in the reminderInfo paragraph
+        document.getElementById('reminderInfo').innerText = reminderContent;
+
+        // Create and play alert sound
+        var audio = new Audio();
+        audio.src = 'https://www.soundjay.com/button/beep-07.wav'; // Replace with the sound URL of your choice
+        audio.play().catch(error => {
+            console.log('Error playing sound:', error);
+        });
+    }
+    
+    function updateMarketList() {
+    const prices = [
+        "🌽 Corn: ₹120/kg", 
+        "🍅 Tomatoes: ₹100/kg", 
+        "🥔 Potatoes: ₹60/kg",
+        "🍇 Grapes: ₹200/kg",
+        "🍉 Watermelon: ₹40/kg",
+        "🥕 Carrots: ₹90/kg",
+        "🥬 Lettuce: ₹150/kg",
+        "🍊 Oranges: ₹80/kg",
+        "🌶️ Green Chilies: ₹130/kg",
+        "🍓 Strawberries: ₹250/kg"
+    ];
+    document.getElementById("marketUpdates").innerHTML = prices.map(item => `<li>${item}</li>`).join("");
+}
+
+ 
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+
+    function toggleContent(id) {
+        const content = document.getElementById(id);
+        const button = content.previousElementSibling;  // This gets the button
+
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";  // Show the content
+            button.innerText = "Show Less";  // Change button text to "Show Less"
+        } else {
+            content.style.display = "none";  // Hide the content
+            button.innerText = "Learn More";  // Reset button text to "Learn More"
+        }
+    }
+
+    // Initialize Map
+    var map = L.map('map').setView([20.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Example farm locations
+    var farms = [
+        { name: "Green Farm", lat: 28.7041, lon: 77.1025 },
+        { name: "Sunny Fields", lat: 19.0760, lon: 72.8777 },
+        { name: "Eco Harvest", lat: 13.0827, lon: 80.2707 }
+    ];
+    
+    farms.forEach(farm => {
+        L.marker([farm.lat, farm.lon]).addTo(map)
+            .bindPopup(`<b>${farm.name}</b><br>Fresh Produce Available`);
+    });
+</script>
+
+<a href="javascript:void(0);" onclick="goBack()" class="back-button">Back</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+</body>
+</html>

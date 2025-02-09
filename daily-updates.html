@@ -1,0 +1,1184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Agriculture Updates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0); /* Pink to Peach Gradient */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden; /* Ensure no overflow with shapes */
+            position: relative;
+        }
+    
+        /* Background Shapes */
+        .background-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: 0; /* Place behind content */
+            animation: moveShape 10s infinite ease-in-out;
+        }
+    
+        .shape1 {
+            width: 200px;
+            height: 200px;
+            background: #ff6b6b; /* Vibrant Pink */
+            top: -50px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+    
+        .shape2 {
+            width: 300px;
+            height: 300px;
+            background: #ff8c42; /* Vibrant Orange */
+            bottom: -150px;
+            right: -100px;
+            animation-delay: 2s;
+        }
+    
+        .shape3 {
+            width: 150px;
+            height: 150px;
+            background: #ff8c42; /* Vibrant Orange */
+            top: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+    
+        @keyframes moveShape {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(200px, 100px);
+            }
+            50% {
+                transform: translate(0, 200px);
+            }
+            75% {
+                transform: translate(-200px, -100px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+    
+        header {
+            background: radial-gradient(circle, #ff6b6b, #ff8c42); /* Circular Gradient for Header */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0 0 50px 50px; /* Add curved bottom edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            position: relative; /* Place above shapes */
+        }
+    
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+            position: relative; /* Place above shapes */
+        }
+    
+        h2 {
+            margin-bottom: 20px;
+            color: #ff6b6b; /* Match header color scheme */
+        }
+    
+        .custom-dropdown {
+            position: relative;
+            width: 300px;
+            max-width: 100%;
+        }
+    
+        .dropdown-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ff8c42;
+            border-radius: 5px;
+            background-color: #fff7f0; /* Light peach background */
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 200px; /* Limit the height of the dropdown */
+            overflow-y: auto; /* Enable vertical scrolling */
+            background-color: #fff7f0; /* Light peach background */
+            border: 1px solid #ff8c42;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+        }
+        
+    
+        .dropdown-menu.active {
+            display: block;
+        }
+    
+        .dropdown-menu li {
+            list-style: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+    
+        .dropdown-menu li i {
+            margin-right: 10px;
+            color: #ff6b6b;
+        }
+    
+        .dropdown-menu li:hover {
+            background-color: #ffe2d9; /* Light peach hover effect */
+        }
+    
+        #crops-content {
+            margin-top: 30px;
+            width: 80%;
+            max-width: 800px;
+            height: 300px; /* Set a fixed height for the scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 15px;
+            background-color: #fff; /* Optional background color */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow-x: hidden; /* Hide horizontal overflow if any */
+        }
+        
+        .crop-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px; /* Add rounded corners */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            max-height: 300px; /* Restrict height of individual crop-box */
+            overflow-y: auto; /* Allow each crop-box to scroll if content overflows */
+        }
+        
+        .crop-box h3 {
+            color: #ff6b6b; /* Heading color */
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #ffe2d9; /* Light peach background */
+            padding: 20px;
+            border-left: 5px solid #ff6b6b;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        ul li {
+            margin-bottom: 15px;
+        }
+        
+    
+        footer {
+            background: linear-gradient(to right, #ff8c42, #ff6b6b); /* Orange to Pink Gradient */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 50px 50px 0 0; /* Curved top edges for footer */
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            position: relative; /* Place above shapes */
+        }
+          /* Style for the back button */
+        .back-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #c9302c;
+        }
+    
+    </style>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<body>
+
+    <header>
+        <h1>Daily Agriculture Updates</h1>
+    </header>
+
+    <main>
+        <h2>Select a Daily Agri Updates Category</h2>
+        <div class="custom-dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown()">
+                Select a Category
+                <span>▼</span>
+            </button>
+            <ul class="dropdown-menu" id="dropdown-menu">
+                <li onclick="selectCategory('market')"><i class="fas fa-chart-line"></i> Market Prices</li>
+                <li onclick="selectCategory('news')"><i class="fas fa-newspaper"></i> Latest Agriculture News</li>
+                <li onclick="selectCategory('tips')"><i class="fas fa-lightbulb"></i> Expert Tips</li>
+                <li onclick="selectCategory('predictions')"><i class="fas fa-calendar-day"></i> Crop Predictions</li>
+                <li onclick="selectCategory('soil')"><i class="fas fa-leaf"></i> Soil Health</li>
+                <li onclick="selectCategory('pests')"><i class="fas fa-bug"></i> Pests & Diseases</li>
+                <li onclick="selectCategory('blockchain')"><i class="fas fa-cogs"></i> Blockchain Traceability</li>
+                <li onclick="selectCategory('network')"><i class="fas fa-users"></i> Farmers Network</li>
+                <li onclick="selectCategory('research')"><i class="fas fa-flask"></i> Research & Innovation</li>
+                <li onclick="selectCategory('events')"><i class="fas fa-calendar-alt"></i> Agriculture Events</li>
+                <li onclick="selectCategory('irrigation')"><i class="fas fa-tint"></i> Irrigation Techniques</li>
+                <li onclick="selectCategory('fertilizer')"><i class="fas fa-cogs"></i> Fertilizer Usage</li>
+                <li onclick="selectCategory('machines')"><i class="fas fa-tractor"></i> Farm Machinery</li>
+                <li onclick="selectCategory('livestock')"><i class="fas fa-paw"></i> Livestock Management</li>
+                <li onclick="selectCategory('organic')"><i class="fas fa-leaf"></i> Organic Farming</li>
+                <li onclick="selectCategory('sustainability')"><i class="fas fa-recycle"></i> Sustainable Agriculture</li>
+            </ul>
+        </div>
+
+        <div id="crops-content"></div>
+        <!-- Background Shapes -->
+    <div class="background-shape shape1"></div>
+    <div class="background-shape shape2"></div>
+    <div class="background-shape shape3"></div>
+
+   
+ </main>
+
+<footer>
+
+        <div class="footer-content">
+            <p>Your source for the latest in agriculture news and updates.</p>
+        </div>
+        <a href="future-trends.html" class="future-trends-link">Future Trends</a>
+        <a href="javascript:void(0);" onclick="goBack()" class="back-button">Back</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+    </footer>
+
+
+    <script>
+         // Function to toggle the dropdown menu
+function toggleDropdown() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    dropdownMenu.classList.toggle('active');
+}
+
+
+// Function to select a category
+function selectCategory(type) {
+    updateSection(type);
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    dropdownMenu.classList.remove('active');
+}
+
+// Data arrays
+const newsUpdates = [
+    "Farmers are adopting new sustainable irrigation methods.",
+    "New technology helps increase crop yields by 20%.",
+    "Global food prices are predicted to rise in the next quarter.",
+    "Scientists discover drought-resistant crop varieties.",
+    "Agricultural policies to support small-scale farmers announced."
+];
+
+const expertTips = [
+    "Use crop rotation to maintain soil fertility.",
+    "Monitor soil moisture levels to prevent overwatering.",
+    "Consider using organic fertilizers for better soil health.",
+    "Ensure proper pest management to reduce crop damage.",
+    "Farmers should adopt no-till farming to reduce soil erosion."
+];
+
+const prices = [
+    { name: 'Tomatoes', price: 120, trend: 'down' },
+    { name: 'Spinach', price: 200, trend: 'up' },
+    { name: 'Lettuce', price: 150, trend: 'stable' },
+    { name: 'Cucumber', price: 60, trend: 'down' },
+    { name: 'Peppers', price: 130, trend: 'up' },
+    { name: 'Apples', price: 100, trend: 'stable' },
+    { name: 'Oranges', price: 120, trend: 'down' },
+    { name: 'Bananas', price: 80, trend: 'up' },
+];
+
+// State variables
+let currentIndex = 0;
+let updateInterval = null;
+
+// Function to show the selected section
+function showSection(section) {
+   
+    // Immediately update the content for the selected section
+    if (section === 'news') {
+        updateNewsOrTips('Latest Agriculture News', newsUpdates);
+       
+        // Set interval for updates every 10 seconds
+        updateInterval = setInterval(() => {
+            updateNewsOrTips('Latest Agriculture News', newsUpdates);
+      
+        }, 10000);
+    
+    } 
+    else if (section === 'tips') {
+        updateNewsOrTips('Expert Tips', expertTips);
+       
+        // Set interval for updates every 10 seconds
+        updateInterval = setInterval(() => {
+            updateNewsOrTips('Expert Tips', expertTips);
+       
+        }, 10000);
+
+    }
+
+}
+
+// Function to update news or tips
+function updateNewsOrTips(title, dataArray) {
+    const contentBox = document.getElementById('content-box');
+    contentBox.innerHTML = `
+        <h3>${title}</h3>
+        <p>${dataArray[currentIndex]}</p>
+    `;
+
+    // Update the index to loop through the array
+    currentIndex = (currentIndex + 1) % dataArray.length;
+
+}
+
+
+// Function to update content based on selected category
+function updateSection(type) {
+   
+    // Clear any existing interval
+    if (updateInterval) {
+        clearInterval(updateInterval);
+  
+    }
+
+    // Clear the crops-content section before adding new content
+   
+    const cropsContent = document.getElementById('crops-content');
+    cropsContent.innerHTML = '';
+
+    let content = '';
+    if (type === 'news') {
+        content = `<div class="crop-box">
+                        <div id="content-box"></div>
+                   </div>`;
+       
+        cropsContent.innerHTML = content;
+       
+        showSection('news'); // Start news updates
+
+    } 
+    else if (type === 'tips') {
+        content = 
+        `<div class="crop-box">
+                        <div id="content-box"></div>
+                   </div>`;
+        cropsContent.innerHTML = content;
+        showSection('tips'); // Start tips updates
+    
+    }
+     else if (type === 'market') {
+        content = 
+        `<div class="crop-box">
+                    <h3>Market Prices</h3>
+                    <ul id="market-prices-list"></ul>
+                   </div>`;
+        cropsContent.innerHTML = content;
+        
+        updateMarketPrices(); // Start market prices updates
+   
+    }
+
+}
+
+// Function to generate market price list with trends
+function generatePriceList() {
+    return prices.map(price => {
+        let trendIcon = '';
+        if (price.trend === 'up') trendIcon = '🔼';
+        else if (price.trend === 'down') trendIcon = '🔽';
+        else trendIcon = '➖';
+
+        return `<li>${price.name}: ₹${price.price} ${trendIcon}</li>`;
+    }).join('');
+}
+
+// Function to update market prices dynamically
+function updateMarketPrices() {
+    function updatePrices() {
+        prices.forEach(price => {
+            const randomChange = Math.random() * 10 - 5; // Random price change
+            price.price = Math.max(0, (price.price + randomChange).toFixed(2));
+            if (randomChange > 0) price.trend = 'up';
+            else if (randomChange < 0) price.trend = 'down';
+            else price.trend = 'stable';
+        });
+
+        document.getElementById('market-prices-list').innerHTML = generatePriceList();
+    }
+
+    document.getElementById('market-prices-list').innerHTML = generatePriceList();
+    setInterval(updatePrices, 5000);
+}
+
+// Function to update content based on selected category
+function updateSection(type) {
+    if (updateInterval) {
+        clearInterval(updateInterval);
+    }
+
+    const cropsContent = document.getElementById('crops-content');
+    cropsContent.innerHTML = '';
+
+    let content = '';
+    if (type === 'news' || type === 'tips') {
+        cropsContent.innerHTML = `
+            <div class="crop-box">
+                <div id="content-box"></div>
+            </div>
+        `;
+        
+        showSection(type);
+
+
+    } 
+    else if (type === 'market') {
+        cropsContent.innerHTML = `
+            <div class="crop-box">
+                <h3>Market Prices</h3>
+                <ul id="market-prices-list"></ul>
+            </div>
+        `;
+
+        updateMarketPrices();
+
+    } 
+    else if (type === 'prediction') {
+        content = `
+            <div class="crop-box">
+                <h3>Crop Prediction:</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> To forecast crop yield based on environmental, soil, and crop factors.</li>
+                    <li><strong>Features:</strong> AI-powered models, satellite imagery, data analytics.</li>
+                    <li><strong>Advantages:</strong> Improved yield estimation, optimized resource management, risk mitigation.</li>
+                    <li><strong>Disadvantages:</strong> Data dependency, inaccurate predictions under extreme conditions, high computational requirements.</li>
+                    <li><strong>Additional Features:</strong> Real-time weather integration, machine learning models, customizable prediction intervals.</li>
+                </ul>
+            </div>`;
+
+        cropsContent.innerHTML = content;
+
+    } 
+    else {
+       
+        // Handle other types of content
+        updateContent(type);
+    
+    }
+}
+
+// Function to update content based on selected category
+function updateContent(type) {
+    let content = '';
+
+    if (type === 'market') {
+        content = `<div class="crop-box">
+                        <h3>Market Prices:</h3>
+                        <ul id="market-prices-list"></ul>
+                    </div>`;
+        updateMarketPrices(); // Function to update market prices
+
+    } else if (type === 'news') {
+        content = `<div class="crop-box" id="news-content">
+                        <h3>Latest Agriculture News:</h3>
+                        <ul id="news-list"></ul>
+                    </div>`;
+        updateNewsContent(); // Function to update news
+
+    } else if (type === 'tips') {
+        content = `<div class="crop-box" id="tips-content">
+                        <h3>Expert Tips:</h3>
+                        <ul id="tips-list"></ul>
+                    </div>`;
+        updateTipsContent(); // Function to update tips
+
+    }
+     else if (type === 'predictions') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Crop Prediction:</h3>
+                            <ul>
+                                <li><strong>Purpose:</strong> To forecast crop yield based on environmental, soil, and crop factors.</li>
+                                <li><strong>Features:</strong> AI-powered models, satellite imagery, data analytics.</li>
+                                <li><strong>Advantages:</strong> Improved yield estimation, optimized resource management, risk mitigation.</li>
+                                <li><strong>Disadvantages:</strong> Data dependency, inaccurate predictions under extreme conditions, high computational requirements.</li>
+                                <li><strong>Additional Features:</strong> Real-time weather integration, machine learning models, customizable prediction intervals.</li>
+                            </ul>
+                        </div>
+                          
+             <div class="crop-box">
+                            <h3>Interactive Crop Recommendation Tool</h3>
+        <p>Use our <a href="#">Interactive Crop Recommendation Tool</a> to get personalized crop suggestions based on your location, soil type, and climate conditions.</p>
+             </div>
+        
+             <div class="crop-box">
+        <h3>Weather Forecast</h3>
+        <p>Check the <a href="#">Upcoming Weather Forecast</a> to plan your planting and care activities. Accurate weather predictions can help you avoid frost and other weather-related issues.</p>
+             </div>
+
+             <div class="crop-box">
+        <h3>Harvest Timing Calculator</h3>
+        <p>Estimate when each crop will be ready for harvest using our <a href="#">Harvest Timing Calculator</a>. This tool helps you plan your harvesting schedule and manage crop storage.</p>
+             </div>
+
+             <div class="crop-box">
+        <h3>Fertilizer and Nutrient Recommendations</h3>
+        <p>Find the best fertilizers and nutrients for each crop with our <a href="#">Fertilizer Guide</a>. This guide provides recommendations based on crop type and soil conditions.</p>
+             </div>
+
+             <div class="crop-box">
+        <h3>Common Problems and Solutions</h3>
+        <ul>
+            <li><strong>Tomatoes:</strong> Common issues include blossom end rot and tomato hornworms. Use calcium supplements and inspect plants regularly.</li>
+            <li><strong>Peppers:</strong> Watch for problems like pepper spot disease and aphids. Maintain proper plant spacing and use organic pest control methods.</li>
+            <li><strong>Beans:</strong> Be aware of issues like rust and aphid infestations. Rotate crops and use natural predators to manage pests.</li>
+            <li><strong>Carrots:</strong> Common issues include carrot fly and root knot nematodes. Use floating row covers and practice crop rotation.</li>
+            <li><strong>Squash:</strong> Watch for squash bugs and powdery mildew. Regularly inspect plants and remove affected leaves to prevent spread.</li>
+            <li><strong>Spinach:</strong> Common problems include downy mildew and leaf miners. Plant resistant varieties and practice good garden sanitation.</li>
+            <li><strong>Radishes:</strong> Be cautious of radish root maggots and fungal diseases. Use floating row covers and avoid overwatering.</li>
+            <li><strong>Lettuce:</strong> Look out for lettuce wilt and downy mildew. Space plants adequately and use mulch to manage soil moisture.</li>
+        </ul>
+    </div>
+
+    <div class="crop-box">
+        <h3>Success Stories</h3>
+        <p>Read inspiring <a href="#">Success Stories</a> from farmers who have successfully grown the recommended crops. Learn about their techniques, challenges, and results.</p>
+    </div>
+
+    <div class="crop-box">
+        <h3>Seasonal Calendar</h3>
+        <p>Download our <a href="#">Seasonal Planting and Harvesting Calendar</a> to keep track of optimal planting and harvesting times for each crop.</p>
+    </div>
+
+    <div class="crop-box">
+        <h3>FAQs</h3>
+        <ul>
+            <li><a href="#">How often should I water my tomato plants?</a></li>
+            <li><a href="#">What are the best soil conditions for growing peppers?</a></li>
+            <li><a href="#">How can I manage pests in my bean crop?</a></li>
+            <li><a href="#">When is the best time to plant carrots for the best yield?</a></li>
+            <li><a href="#">What are the signs of squash vine borer infestation?</a></li>
+            <li><a href="#">How can I improve spinach growth in warmer climates?</a></li>
+            <li><a href="#">What are common problems with radish growth?</a></li>
+            <li><a href="#">How do I prevent lettuce from bolting too early?</a></li>
+        </ul>
+        
+        
+                        </div>`;
+                
+                        document.getElementById('crops-content').innerHTML = content;
+            } 
+            else if (type === 'soil') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Soil Health Monitoring:</h3>
+                            <ul>
+                                <li><strong>Purpose:</strong> To monitor and improve soil quality through regular health checks.</li>
+                                <li><strong>Features:</strong> Soil sensors, nutrient analysis, moisture tracking.</li>
+                                <li><strong>Advantages:</strong> Improved soil fertility, better crop performance, reduced environmental impact.</li>
+                                <li><strong>Disadvantages:</strong> Initial cost of equipment, need for calibration, dependence on sensor data accuracy.</li>
+                                <li><strong>Additional Features:</strong> Integration with irrigation systems, remote monitoring, predictive soil health trends.</li>
+                            </ul>
+                        </div>
+
+                        <div class="crop-box">
+        <h3>Key Soil Health Parameters</h3>
+        <ul>
+            <li><strong>Soil pH:</strong> Regularly test your soil's pH to keep it within the optimal range (usually 6.0 to 6.8) for most crops. Adjust with lime or sulfur as needed.
+                <ul>
+                    <li><strong>Tip:</strong> Perform soil pH tests in different areas of your field, as pH levels can vary within a single field.</li>
+                </ul>
+            </li>
+
+            
+            <li><strong>Nutrient Levels:</strong> Monitor key nutrients such as nitrogen (N), phosphorus (P), and potassium (K). Use soil tests to determine deficiencies and apply appropriate fertilizers.
+                <ul>
+                    <li><strong>Tip:</strong> Use a balanced fertilizer that contains micronutrients to prevent deficiencies in essential trace elements.</li>
+                </ul>
+            </li>
+        
+
+       
+            <li><strong>Soil Moisture:</strong> Employ moisture sensors to track soil moisture levels and ensure proper irrigation. Avoid over or under-watering by adjusting irrigation schedules.
+                <ul>
+                    <li><strong>Tip:</strong> Install moisture sensors at different soil depths to get a complete picture of soil moisture levels.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Organic Matter:</strong> Add compost or other organic matter to enhance soil structure, fertility, and water-holding capacity. Aim for at least 3-5% organic matter in your soil.
+                <ul>
+                    <li><strong>Tip:</strong> Incorporate organic matter into the soil during the off-season to improve soil health before planting.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Soil Texture:</strong> Understand your soil’s texture (sand, silt, clay) to determine drainage and nutrient-holding capacities. Use this information to adjust cultivation practices.
+                <ul>
+                    <li><strong>Tip:</strong> Use soil texture information to choose appropriate tillage practices and improve soil structure.</li>
+                </ul>
+            </li>
+        
+            <li><strong>Soil Temperature:</strong> Monitor soil temperature as it affects seed germination and root growth. Maintain optimal temperatures for different crops.
+                <ul>
+                    <li><strong>Tip:</strong> Use soil temperature data to time your planting and avoid sowing seeds too early or too late in the season.</li>
+                </ul>
+            </li>
+        
+            <li><strong>Soil Compaction:</strong> Check for soil compaction which can hinder root growth and water infiltration. Use practices like deep tillage or subsoiling to alleviate compaction.
+                <ul>
+                    <li><strong>Tip:</strong> Avoid working soil when it is too wet to prevent further compaction. Use cover crops to improve soil structure.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="crop-box">
+        <h3>Types of Soil</h3>
+        <ul>
+            <li><strong>Sandy Soil:</strong> Well-draining but low in nutrients. Requires frequent watering and fertilization.
+                <ul>
+                    <li><strong>Tip:</strong> Improve nutrient retention by adding organic matter and using mulch to reduce water evaporation.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Clay Soil:</strong> High in nutrients but can retain too much water. Improve drainage by adding organic matter.
+                <ul>
+                    <li><strong>Tip:</strong> Incorporate sand and organic matter to improve drainage and soil aeration.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Silt Soil:</strong> Fertile and retains moisture well but can become compacted. Incorporate organic matter to improve structure.
+                <ul>
+                    <li><strong>Tip:</strong> Use cover crops to prevent erosion and maintain soil structure.</li>
+                </ul>
+            </li>
+        
+            <li><strong>Loamy Soil:</strong> Ideal for most crops, balanced in sand, silt, and clay. Retains nutrients and moisture well while allowing good drainage.
+                <ul>
+                    <li><strong>Tip:</strong> Maintain loamy soil by regularly adding organic matter and avoiding excessive tillage.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Peat Soil:</strong> Rich in organic matter, good for high-value crops but may need additional drainage.
+                <ul>
+                    <li><strong>Tip:</strong> Monitor moisture levels closely as peat soils can become waterlogged easily.</li>
+                </ul>
+            </li>
+       
+            <li><strong>Saline Soil:</strong> Contains high levels of soluble salts, which can harm plant growth. Use salt-tolerant crops and improve drainage.
+                <ul>
+                    <li><strong>Tip:</strong> Implement leaching practices to reduce salt concentrations and use soil amendments to improve soil structure.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="crop-box">
+             <h3>Additional Tools and Resources</h3>
+        <ul>
+            <li><a href="#">Soil Moisture Calculator</a> - Calculate and manage optimal soil moisture levels.</li>
+            <li><a href="#">Nutrient Testing Kit</a> - Assess soil nutrient levels and address deficiencies.</li>
+            <li><a href="#">Soil Texture Analyzer</a> - Determine soil texture and adjust management practices.</li>
+            <li><a href="#">Soil Temperature Monitor</a> - Track soil temperatures to optimize planting and growth.</li>
+            <li><a href="#">Compaction Test Kit</a> - Check and address soil compaction issues.</li>
+            <li><a href="#">Organic Matter Calculator</a> - Calculate the amount of organic matter needed to improve soil quality.</li>
+        </ul>
+        
+                        </div>`;
+                document.getElementById('crops-content').innerHTML = content;
+            } 
+            else if (type === 'pests') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Pests & Disease Forecast:</h3>
+                            <ul>
+                                <li><strong>Purpose:</strong> To predict pest outbreaks and disease spread for early intervention.</li>
+                                <li><strong>Features:</strong> Predictive modeling, real-time alerts, risk analysis.</li>
+                                <li><strong>Advantages:</strong> Early detection, reduced pesticide use, improved crop yields.</li>
+                                <li><strong>Disadvantages:</strong> False alarms, reliance on accurate data, limited scope for certain pests.</li>
+                                <li><strong>Additional Features:</strong> Integration with weather forecasting, mobile app alerts, automated monitoring systems.</li>
+                            </ul>
+                        </div>
+
+                        <div class="crop-box">
+                            <h3>Current Pests and Diseases</h3>
+        <p>Current pest forecast: High risk of aphid infestation. Recommended treatments include neem oil and insecticidal soap.</p>
+        
+        <ul>
+            <li><strong>Aphids:</strong> Monitor for infestations as they can spread rapidly. Recommended treatments include neem oil, insecticidal soap, and introducing natural predators like lacewings.
+                <ul>
+                    <li><strong>Tip:</strong> Regularly check the undersides of leaves where aphids often congregate.</li>
+                </ul>
+            </li>
+
+            <li><strong>Spider Mites:</strong> These tiny pests can cause significant damage by sucking plant juices. Use miticides or introduce natural predators like ladybugs or predatory mites.
+                <ul>
+                    <li><strong>Tip:</strong> Increase humidity around plants to reduce spider mite populations.</li>
+                </ul>
+            </li>
+
+            <li><strong>Whiteflies:</strong> Whiteflies can weaken plants and transmit diseases. Use insecticidal soap, sticky traps, or introduce natural predators like lacewings or parasitic wasps.
+                <ul>
+                    <li><strong>Tip:</strong> Place yellow sticky traps near plants to monitor and reduce whitefly populations.</li>
+                </ul>
+            </li>
+
+            <li><strong>Fungal Diseases:</strong> Diseases such as powdery mildew and downy mildew can affect plant health. Ensure proper spacing, good airflow, and avoid overhead watering to prevent fungal growth.
+                <ul>
+                    <li><strong>Tip:</strong> Use fungicides as a preventive measure if conditions are favorable for fungal development.</li>
+                </ul>
+            </li>
+
+            <li><strong>Leaf Miners:</strong> These pests create tunnels in leaves, which can reduce photosynthesis. Use insecticides or introduce natural predators like parasitic wasps.
+                <ul>
+                    <li><strong>Tip:</strong> Remove and destroy affected leaves to reduce leaf miner populations.</li>
+                </ul>
+            </li>
+
+            <li><strong>Root Nematodes:</strong> These microscopic pests attack plant roots, causing stunted growth. Use nematicides, solarization, or crop rotation to manage nematodes.
+                <ul>
+                    <li><strong>Tip:</strong> Practice crop rotation with non-host crops to reduce nematode populations in the soil.</li>
+                </ul>
+            </li>
+
+            <li><strong>Blight Diseases:</strong> Blight diseases like late blight can rapidly spread and destroy crops. Remove infected plants and use resistant varieties if available.
+                <ul>
+                    <li><strong>Tip:</strong> Ensure good air circulation around plants to minimize the risk of blight infections.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="crop-box">
+        <h3>Additional Features</h3>
+        <ul>
+            <li><a href="#">Pest Identification Guide</a> - Identify pests quickly using images and descriptions.</li>
+            <li><a href="#">Disease Management Calendar</a> - Plan treatments and preventive measures based on seasonal risks.</li>
+            <li><a href="#">Integrated Pest Management (IPM) Tools</a> - Strategies and tools for managing pests in an environmentally friendly manner.</li>
+            <li><a href="#">Pest and Disease Reporting Form</a> - Report new pest and disease sightings to help track and manage outbreaks.</li>
+            <li><a href="#">Treatment Scheduler</a> - Schedule and track pest control treatments for better management.</li>
+            <li><a href="#">Natural Predators Directory</a> - Find information on beneficial insects and organisms to help manage pests.</li>
+        </ul>
+    </div>
+
+    <div class="crop-box">
+        <h3>Prevention and Management Tips</h3>
+        <ul>
+            <li><strong>Regular Monitoring:</strong> Conduct regular inspections of your plants to catch early signs of pests and diseases.</li>
+            <li><strong>Cleanliness:</strong> Keep your garden or farm clean by removing debris and dead plant material where pests can hide.</li>
+            <li><strong>Proper Watering:</strong> Avoid over-watering and ensure good drainage to prevent conditions that favor fungal diseases.</li>
+            <li><strong>Resistant Varieties:</strong> Choose plant varieties that are resistant to common pests and diseases.</li>
+            <li><strong>Biological Control:</strong> Use natural predators and parasitoids to keep pest populations in check.</li>
+            <li><strong>Record Keeping:</strong> Maintain records of pest and disease occurrences to help with future management strategies.</li>
+        </ul>
+    </div>
+
+                        </div>`;
+
+                document.getElementById('crops-content').innerHTML = content;
+            } 
+            else if (type === 'blockchain') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Blockchain Traceability:</h3>
+                            <ul>
+                                <li><strong>Purpose:</strong> To enhance transparency, traceability, and accountability in the agricultural supply chain.</li>
+                                <li><strong>Features:</strong> Smart contracts, real-time tracking, decentralized ledgers.</li>
+                                <li><strong>Advantages:</strong> Increased transparency, reduced fraud, faster transactions, better supply chain management.</li>
+                                <li><strong>Disadvantages:</strong> High setup costs, complex implementation, dependency on technology.</li>
+                                <li><strong>Additional Features:</strong> Integration with IoT devices, AI-driven analysis, scalability for large supply chains.</li>
+                            </ul>
+                        </div>
+
+                        <div class="crop-box">
+                            <h3>Key Features</h3>
+        <ul>
+            <li><strong>Farm-to-Table Traceability:</strong> Track the journey of your produce from farm, through processing and packaging, to the final consumer, ensuring full transparency and authenticity.</li>
+            <li><strong>Quality Assurance:</strong> Verify the quality, origin, and compliance of products with industry standards and certifications. Detailed reports are accessible for each product.</li>
+            <li><strong>Certifications:</strong> Easily verify certifications such as organic, fair-trade, and non-GMO, ensuring that products meet the highest standards.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Benefits</h3>
+        <ul>
+            <li><strong>Enhanced Transparency:</strong> Builds consumer trust by providing clear and verifiable information about product origins and quality.</li>
+            <li><strong>Improved Safety:</strong> Helps identify and resolve safety issues swiftly through detailed tracking and data analysis.</li>
+            <li><strong>Increased Efficiency:</strong> Streamlines the supply chain by reducing paperwork and automating processes through digital records and smart contracts.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Additional Tools and Resources</h3>
+        <ul>
+            <li><a href="#">Traceability Dashboard</a> - Access a comprehensive dashboard for monitoring and analyzing traceability data in real-time.</li>
+            <li><a href="#">Certification Verification Tool</a> - Verify the authenticity of certifications and quality assurances with a user-friendly tool.</li>
+            <li><a href="#">Supply Chain Mapping</a> - Visualize and analyze the complete supply chain with detailed mapping and analytics.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+             <h3>Implementation Considerations</h3>
+        <ul>
+            <li><strong>Technology Requirements:</strong> Ensure compatibility with blockchain platforms and technologies, and assess integration needs.</li>
+            <li><strong>Stakeholder Training:</strong> Provide training for stakeholders on using the blockchain system, understanding traceability features, and leveraging available tools.</li>
+            <li><strong>Data Management:</strong> Develop robust processes for accurate data entry, management, and verification to maintain system integrity.</li>
+            </ul>
+        
+           </div>`;
+                document.getElementById('crops-content').innerHTML = content;
+
+            } 
+            else if (type === 'network') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Farmers Network Formation:</h3>
+                            <ul>
+                                <li>Join farmer co-ops.</li>
+                                <li>Collaborate for better yields.</li>
+                            </ul>
+                        </div>
+
+                        <div class="crop-box">
+                            <h3>Join our Farmer Network:</h3>
+        <ul>
+            <li><a href="#">Farmers' Forum</a> - Engage with fellow farmers in a robust forum to exchange tips, troubleshoot issues, and discuss best practices.</li>
+            <li><a href="#">Collaborative Projects</a> - Collaborate on projects such as research, farm improvement initiatives, and technology trials.</li>
+            <li><a href="#">Resource Sharing</a> - Share or request resources like seeds, equipment, and technology to optimize your farm operations.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+             <h3>New Features and Innovations</h3>
+        <ul>
+            <li><strong>Virtual Collaboration Hub:</strong> Engage in real-time collaboration with other farmers through chat, file sharing, and project management tools.</li>
+            <li><strong>Mobile App Integration:</strong> Access the network and its resources from anywhere with our mobile app, featuring notifications, community forums, and resource management.</li>
+            <li><strong>Peer Mentorship Program:</strong> Link up with experienced mentors for one-on-one support and personalized advice on various aspects of farming.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Weekly Meeting Schedule</h3>
+        <p>Our weekly meetings offer a platform to stay updated on network activities, share insights, and discuss collaborative projects. Meetings are held every [Day] at [Time].</p>
+        <p>Recent Topics Covered:</p>
+        <ul>
+            <li><strong>Government Grants and Subsidies:</strong> Detailed information on available grants, subsidies, application processes, and eligibility criteria.</li>
+            <li><strong>New Farming Technologies:</strong> Exploration of the latest technologies and tools that can enhance farm efficiency and productivity.</li>
+            <li><strong>Climate Resilience Strategies:</strong> Strategies for adapting to and mitigating the impacts of climate change on crop yields and farm operations.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Connect with Us</h3>
+        <p>For more information, to get involved, or to provide feedback, contact us through the following channels:</p>
+        <ul>
+            <li>Email: <a href="mailto:info@agrihub.com">info@agrihub,com</a></li>
+            <li>Phone: +123 456 7890</li>
+            <li>Follow us on Social Media: <a href="#">Facebook</a>, <a href="#">Twitter</a>, <a href="#">LinkedIn</a></li>
+            <li><a href="#">Contact Form</a> - Fill out our online contact form for inquiries and support.</li>
+            <li><a href="#">Feedback and Suggestions</a> - Share your feedback and suggestions to help us improve the network and its services.</li>
+        </ul>
+                        </div>`;
+
+                document.getElementById('crops-content').innerHTML = content;
+
+            } 
+            else if (type === 'research') {
+                content = 
+                `<div class="crop-box">
+                            <h3>Research & Innovation:</h3>
+                            <ul>
+                                <li>New drought-resistant seeds.</li>
+                                <li>Efficient irrigation methods.</li>
+                                <li><a href="#">Impact of Organic Farming on Soil Health</a> - Study on how organic farming practices enhance soil quality, nutrient content, and crop productivity.</li>
+            <li><a href="#">Advancements in Precision Agriculture Technology</a> - Review of the latest technologies in precision agriculture, including drones, sensors, and data analytics.</li>
+            <li><a href="#">Climate Change Effects on Crop Yields</a> - Analysis of the impact of climate change on crop yields and strategies for adaptation and mitigation.</li>
+            <li><a href="#">Innovative Pest Management Strategies</a> - Research on novel pest control methods, including biological controls and integrated pest management (IPM).</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Innovative Ideas and Features</h3>
+            <ul>
+             <li><strong>Interactive Research Database:</strong> Access a comprehensive and interactive database of research papers and articles, with advanced search, filtering options, and downloadable content.</li>
+            <li><strong>Research Summaries and Highlights:</strong> Read concise summaries and highlights of major research findings to quickly grasp key insights and implications.</li>
+            <li><strong>Expert Interviews and Panel Discussions:</strong> Watch exclusive interviews and panel discussions with leading researchers and industry experts sharing their insights and innovations.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Recommended Research Websites and Resources</h3>
+            <ul>
+            <li><a href="https://www.sciencedirect.com/journal/field-crops-research" target="_blank">ScienceDirect - Field Crops Research</a> - Comprehensive journal on field crops research, including soil and crop management.</li>
+            <li><a href="https://www.frontiersin.org/journals/agriculture" target="_blank">Frontiers in Agriculture</a> - Open-access journal featuring research across various agricultural disciplines.</li>
+            <li><a href="https://www.springer.com/journal/11240" target="_blank">Springer - Plant and Soil</a> - Journal focusing on plant and soil science research and advancements.</li>
+            </ul>
+        </div>
+
+        <div class="crop-box">
+            <h3>Usage and Benefits</h3>
+            <ul>
+            <li><strong>Stay Informed:</strong> Keep up-to-date with the latest research and innovations to make informed decisions in agricultural practices.</li>
+            <li><strong>Enhance Practices:</strong> Apply cutting-edge knowledge and technologies to improve farming practices, productivity, and sustainability.</li>
+            <li><strong>Drive Innovation:</strong> Utilize innovative research to drive advancements and remain competitive in the agricultural industry.</li>
+            
+                            </ul>
+                        </div>`;
+
+                document.getElementById('crops-content').innerHTML = content;
+
+            } 
+            else if (type === 'events') {
+        content = `
+            <div class="crop-box">
+                <h3>Agriculture Events:</h3>
+                <ul>
+                    <li><strong>International Agri Expo</strong> - March: A global event showcasing the latest in agricultural technology and innovations.</li>
+                    <li><strong>Farmers Conference</strong> - April: A gathering for farmers to discuss new techniques, policy changes, and sustainable practices.</li>
+                    <li><strong>Agri-Tech Innovation Week</strong> - July: A week dedicated to exploring the latest advancements in agri-tech, from drones to AI.</li>
+                    <li><strong>Global Organic Farming Fair</strong> - October: An event focusing on organic farming solutions and sustainability in agriculture.</li>
+                    <li><strong>International Agricultural Trade Show</strong> - November: A platform for businesses to showcase new farming equipment and agricultural products.</li>
+                </ul>
+            </div>`;
+
+    } 
+    else if (type === 'irrigation') {
+        content = `
+            <div class="crop-box">
+                <h3>Irrigation Techniques:</h3>
+                <ul>
+                    <li><strong>Drip Irrigation:</strong> Efficient water use that directly delivers water to plant roots, minimizing waste.</li>
+                    <li><strong>Sprinkler Systems:</strong> Useful for larger areas, sprinklers distribute water evenly across the field.</li>
+                    <li><strong>Center Pivot Irrigation:</strong> Commonly used for large, circular fields, it rotates around a central pivot point.</li>
+                    <li><strong>Subsurface Drip Irrigation (SDI):</strong> Delivers water directly to the root zone below the soil surface, reducing evaporation.</li>
+                    <li><strong>Rainwater Harvesting:</strong> Collects rainwater for irrigation use, conserving potable water resources and reducing water costs.</li>
+                    <li><strong>Smart Irrigation:</strong> Uses sensors and weather forecasts to optimize irrigation schedules and reduce water waste.</li>
+                </ul>
+            </div>`;
+
+    } 
+    else if (type === 'fertilizer') {
+        content = `
+            <div class="crop-box">
+                <h3>Fertilizer Usage:</h3>
+                <ul>
+                    <li><strong>Organic Fertilizers:</strong> Composed of natural materials like compost, manure, and bio-based products that enrich soil health.</li>
+                    <li><strong>Inorganic Fertilizers:</strong> Synthetic fertilizers that provide immediate nutrient availability, but may affect long-term soil health.</li>
+                    <li><strong>Slow-Release Fertilizers:</strong> Gradually release nutrients over time, reducing the risk of nutrient leaching and providing sustained growth.</li>
+                    <li><strong>Foliar Fertilizers:</strong> Applied directly to plant leaves, providing rapid absorption of nutrients.</li>
+                    <li><strong>Green Manure:</strong> A cover crop grown specifically to be tilled back into the soil to improve soil fertility.</li>
+                    <li><strong>Micronutrient Fertilizers:</strong> Supplements essential trace elements like zinc, iron, and copper to support healthy plant growth.</li>
+                </ul>
+            </div>`;
+
+    } 
+    else if (type === 'machines') {
+        content = `
+            <div class="crop-box">
+                <h3>Farm Machinery:</h3>
+                <ul>
+                    <li><strong>Tractors:</strong> Essential for tilling, plowing, and other soil preparation tasks.</li>
+                    <li><strong>Combine Harvesters:</strong> Efficient for harvesting grains like wheat, rice, and corn, combining several processes in one machine.</li>
+                    <li><strong>Plows:</strong> Used to break up and turn the soil to prepare it for planting.</li>
+                    <li><strong>Seeders:</strong> Machines designed for planting seeds accurately at the right depth.</li>
+                    <li><strong>Irrigation Pumps:</strong> Used to move water from a source to crops in irrigation systems.</li>
+                    <li><strong>Sprayers:</strong> Distribute pesticides, herbicides, or fertilizers across the field.</li>
+                    <li><strong>Bulldozers:</strong> Used for large-scale land clearing and leveling before planting crops.</li>
+                </ul>
+            </div>`;
+
+                document.getElementById('crops-content').innerHTML = content;
+            } 
+            else if (type === 'livestock') {
+    content = 
+    `<div class="crop-box">
+                <h3>Livestock Management:</h3>
+                <ul>
+                    <li>Provide balanced nutrition for dairy cows.</li>
+                    <li>Vaccinate livestock for disease prevention.</li>
+                </ul>
+            </div>
+
+            <div class="crop-box">
+                <h4>Purpose:</h4>
+                <p>To ensure healthy and productive livestock.</p>
+           
+                <h4>Advantages:</h4>
+                <ul>
+                   <li>Improved livestock health and productivity.</li>
+                    <li>Reduced risk of disease outbreaks.</li>
+                </ul>
+           
+                <h4>Benefits:</h4>
+                <ul>
+                    <li>Higher quality animal products.</li>
+                    <li>Increased farm profitability.</li>
+                </ul>
+            
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li>Higher upfront costs for quality feed and vaccines.</li>
+                    <li>Time-consuming management practices.</li>
+                </ul>
+            
+                <h4>Additional Features:</h4>
+                <ul>
+                    <li>Monitoring livestock health through technology.</li>
+                    <li>Implementing biosecurity measures.</li>
+                </ul>
+           
+                <h4>Implementation:</h4>
+                <p>Adopt a structured feeding program and regular vaccination schedule.</p>
+            </div>`;
+
+    document.getElementById('crops-content').innerHTML = content;
+
+} 
+else if (type === 'organic') {
+    content = 
+    `<div class="crop-box">
+                <h3>Organic Farming:</h3>
+                <ul>
+                    <li>Use compost to enrich the soil.</li>
+                    <li>Avoid chemical pesticides.</li>
+                </ul>
+            </div>
+
+            <div class="crop-box">
+                 <h4>Purpose:</h4>
+                <p>To promote eco-friendly and sustainable farming methods.</p>
+                <h4>Advantages:</h4>
+                <ul>
+                    <li>Improved soil health and fertility.</li>
+                    <li>Reduced environmental impact.</li>
+                </ul>
+           
+                <h4>Benefits:</h4>
+                <ul>
+                    <li>Healthier crops free from harmful chemicals.</li>
+                    <li>Preservation of biodiversity.</li>
+                </ul>
+            
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li>Lower initial yields compared to conventional farming.</li>
+                    <li>Labor-intensive practices.</li>
+                </ul>
+            
+
+                <h4>Additional Features:</h4>
+                <ul>
+                    <li>Integration of crop and livestock systems.</li>
+                    <li>Use of natural pest control methods.</li>
+                </ul>
+
+                <h4>Implementation:</h4>
+                <p>Begin by transitioning a portion of your farm to organic methods and gradually scale up.</p>
+            </div>`;
+
+    document.getElementById('crops-content').innerHTML = content;
+    
+} 
+else if (type === 'sustainability') {
+    content = 
+    `<div class="crop-box">
+                <h3>Sustainable Agriculture:</h3>
+                <ul>
+                    <li>Reduce chemical inputs and pollution.</li>
+                    <li>Practice crop rotation for soil health.</li>
+                </ul>
+            </div>
+
+            <div class="crop-box">
+                <h4>Purpose:</h4>
+                <p>To ensure long-term agricultural productivity and environmental conservation.</p>
+                <h4>Advantages:</h4>
+                <ul>
+                    <li>Improved ecosystem health.</li>
+                    <li>Enhanced soil and water conservation.</li>
+                </ul>
+                
+                <h4>Benefits:</h4>
+                <ul>
+                    <li>Greater resilience to climate change.</li>
+                    <li>Increased food security.</li>
+                </ul>
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li>Initial costs may be higher.</li>
+                    <li>Requires long-term commitment and planning.</li>
+                </ul>
+                <h4>Additional Features:</h4>
+                <ul>
+                    <li>Adoption of precision farming techniques.</li>
+                    <li>Use of renewable energy sources on the farm.</li>
+                </ul>
+                <h4>Implementation:</h4>
+                <p>Incorporate sustainable practices incrementally, starting with soil health improvements.</p>
+            </div>
+
+            </div>`;
+}
+
+
+    // Inject the content into the HTML
+    document.getElementById('crops-content').innerHTML = content;
+        }
+   
+    </script>
+
+
+
+</body>
+</html>

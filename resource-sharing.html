@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Sharing</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* General Reset */
+        body, h1, h2, h3, p, ul {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f5f8;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        /* Layout */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background-color: #1f6f3c;
+            padding: 20px 0;
+            color: white;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 5px;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav ul li a:hover {
+            color: #a1d193;
+            border-bottom: 3px solid #a1d193;
+        }
+
+        /* Content Section */
+        .content-section {
+            background-color: #fff;
+            padding: 40px 30px;
+            margin-bottom: 50px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            color: #1f6f3c;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 4px solid #1f6f3c;
+            padding-bottom: 10px;
+        }
+
+        /* Map Section */
+        .map-container {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        #map {
+            height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #1f6f3c;
+        }
+
+        /* Notifications Section */
+        .notification-section {
+            background-color: #fff;
+            padding: 40px 30px;
+            margin-bottom: 50px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-section h2 {
+            font-size: 2.5rem;
+            color: #1f6f3c;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 4px solid #1f6f3c;
+            padding-bottom: 10px;
+        }
+
+        .notification-section input {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .notification-section input:focus {
+            border-color: #1f6f3c;
+        }
+
+        .notification-section button {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1f6f3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 100%;
+        }
+
+        .notification-section button:hover {
+            background-color: #145c2b;
+        }
+
+        .notification-list {
+            margin-top: 30px;
+        }
+
+        .notification-list div {
+            background-color: #f1f5f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1f6f3c;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 50px 50px 0 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: white;
+            margin: 0 15px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s ease;
+        }
+
+        footer a:hover {
+            border-bottom: 2px solid #a1d193;
+        }
+          /* Style for the back button */
+        .back-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #c9302c;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Agriculture Resource Sharing</h1>
+    </header>
+
+    <div id="resources" class="content-section">
+        <h2>Shared Resources</h2>
+        <input type="text" id="resource-title" placeholder="Resource Title">
+        <textarea id="resource-description" placeholder="Resource Description"></textarea>
+        <input type="text" id="resource-category" placeholder="Category">
+        <input type="text" id="resource-tags" placeholder="Tags (comma-separated)">
+        <input type="text" id="resource-link" placeholder="Resource Link">
+        <button onclick="shareResource()">Share Resource</button>
+        <div id="shared-resources"></div>
+    </div>
+
+    <div class="map-container">
+        <h2>Resource Map of India</h2>
+        <div id="map"></div>
+
+        <!-- Dropdown to select types of agriculture -->
+        <div>
+    <label for="agriculture-type">Select Agriculture Type:</label>
+    <select id="agriculture-type" onchange="highlightAgricultureType()">
+        <option value="">Select...</option>
+        <option value="organic">🌱 Organic Farming</option>
+        <option value="rice">🌾 Rice Cultivation</option>
+        <option value="wheat">🌿 Wheat Farming</option>
+        <option value="horticulture">🍎 Horticulture</option>
+         </select>
+</div>
+
+
+    <!-- Notifications Section -->
+    <div id="notifications" class="notification-section">
+        <h2>Notifications</h2>
+        <input type="text" id="notification-title" placeholder="Notification Title">
+        <input type="text" id="notification-content" placeholder="Notification Content">
+        <button onclick="addNotification()">Add Notification</button>
+        <div class="notification-list" id="notification-list">
+            <!-- Example notifications -->
+            <div>
+                <h3>Upcoming Webinar on Sustainable Farming</h3>
+                <p>Join us on 24th September for a live webinar discussing sustainable farming techniques and their impact on crop yield.</p>
+            </div>
+            <div>
+                <h3>New Fertilizer Guidelines Released</h3>
+                <p>The Ministry of Agriculture has released new guidelines for the usage of organic fertilizers. Check them out on our resources page.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Agriculture Resource Sharing. All rights reserved.</p>
+            <div class="navigation">
+                <a href="#resources">Resources</a>
+                <a href="#notifications">Notifications</a>
+                <a href="daily-updates.html">Daily Agriculture Updates</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        function shareResource() {
+            const title = document.getElementById('resource-title').value;
+            const description = document.getElementById('resource-description').value;
+            const category = document.getElementById('resource-category').value;
+            const tags = document.getElementById('resource-tags').value.split(',').map(tag => tag.trim());
+            const link = document.getElementById('resource-link').value;
+
+            const sharedResources = document.getElementById('shared-resources');
+            sharedResources.innerHTML = '';
+
+            if (title && description) {
+                sharedResources.innerHTML += `<div>
+                                                <h3>${title}</h3>
+                                                <p>${description}</p>
+                                                <p><strong>Category:</strong> ${category}</p>
+                                                <p><strong>Tags:</strong> ${tags.join(', ')}</p>
+                                                ${link ? `<p><a href="${link}" target="_blank">More Information</a></p>` : ''}
+                                              </div>`;
+            }
+
+            const exampleResources = [
+                {
+                    title: 'Best Practices for Soil Conservation',
+                    description: 'A comprehensive guide on how to maintain soil health, including techniques like crop rotation, cover cropping, and reduced tillage.',
+                    category: 'Soil Management',
+                    tags: ['Soil Health', 'Crop Rotation', 'Cover Cropping'],
+                    link: 'https://example.com/soil-conservation'
+                },
+                {
+                    title: 'Integrated Pest Management Strategies',
+                    description: 'An overview of sustainable pest control methods that minimize chemical use while maximizing crop protection.',
+                    category: 'Pest Management',
+                    tags: ['Pest Control', 'Sustainable Agriculture', 'Crop Protection'],
+                    link: 'https://example.com/pest-management'
+                },
+                {
+                    title: 'Efficient Irrigation Techniques',
+                    description: 'Learn about various irrigation methods, such as drip irrigation and sprinkler systems, to optimize water usage on farms.',
+                    category: 'Irrigation',
+                    tags: ['Water Usage', 'Drip Irrigation', 'Sprinkler Systems'],
+                    link: 'https://example.com/irrigation-techniques'
+                },
+                {
+                    title: 'Organic Farming Certification Process',
+                    description: 'A step-by-step guide on how to transition to organic farming and obtain certification, including soil management and organic inputs.',
+                    category: 'Organic Farming',
+                    tags: ['Certification', 'Organic Inputs', 'Soil Management'],
+                    link: 'https://example.com/organic-certification'
+                },
+                {
+                    title: 'Climate-Smart Agriculture Techniques',
+                    description: 'Explores farming methods that adapt to changing climate conditions, focusing on sustainability and resilience.',
+                    category: 'Climate Change',
+                    tags: ['Climate Adaptation', 'Sustainability', 'Resilience'],
+                    link: 'https://example.com/climate-smart-agriculture'
+                },
+                {
+                    title: 'Nutrient Management for High-Yield Crops',
+                    description: 'Details on how to manage soil nutrients effectively to increase crop yield, focusing on balanced fertilization and soil testing.',
+                    category: 'Nutrient Management',
+                    tags: ['Soil Nutrients', 'Fertilization', 'Soil Testing'],
+                    link: 'https://example.com/nutrient-management'
+                },
+                {
+                    title: 'Post-Harvest Handling and Storage',
+                    description: 'Guidelines for properly handling and storing crops after harvest to reduce losses and maintain quality.',
+                    category: 'Post-Harvest',
+                    tags: ['Storage', 'Handling', 'Quality Maintenance'],
+                    link: 'https://example.com/post-harvest'
+                }
+            ];
+
+            exampleResources.forEach(resource => {
+                sharedResources.innerHTML += `<div>
+                                                <h3>${resource.title}</h3>
+                                                <p>${resource.description}</p>
+                                                <p><strong>Category:</strong> ${resource.category}</p>
+                                                <p><strong>Tags:</strong> ${resource.tags.join(', ')}</p>
+                                                ${resource.link ? `<p><a href="${resource.link}" target="_blank">More Information</a></p>` : ''}
+                                              </div>`;
+            });
+        }
+
+        // Initialize Leaflet map for India
+        const map = L.map('map').setView([20.5937, 78.9629], 5); // Coordinates for India
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Custom icons
+const icons = {
+    organic: L.icon({
+        iconUrl: 'https://img.icons8.com/ios-filled/50/56a95d/organic-food.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    rice: L.icon({
+        iconUrl: 'https://img.icons8.com/color/48/000000/rice-bowl.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    wheat: L.icon({
+        iconUrl: 'https://img.icons8.com/ios-filled/50/ffff00/wheat.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    horticulture: L.icon({
+        iconUrl: 'https://img.icons8.com/ios-filled/50/0000ff/garden.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    })
+};
+
+// Layer groups for different types of agriculture
+const organicLayer = L.layerGroup();
+const riceLayer = L.layerGroup();
+const wheatLayer = L.layerGroup();
+const horticultureLayer = L.layerGroup();
+ // Adding multiple markers (10 per category) with custom icons for each type of agriculture
+
+    // Organic Farming markers in Tamil Nadu
+const organicLocations = [
+   [23.5937, 78.9629], [21.5937, 79.9629], [22.9734, 78.6569], [24.9937, 76.9629], [26.7735, 77.5689],
+    [25.3176, 80.7300], [27.2046, 78.1240], [23.1823, 77.5224], [22.5726, 88.3639], [20.5937, 75.9629],
+    
+    // Tamil Nadu Organic Farming Locations
+    [13.0827, 80.2707], // Chennai
+    [11.0168, 76.9558], // Coimbatore
+    [10.7905, 78.7047], // Trichy
+    [9.9252, 78.1198],  // Madurai
+    [12.2958, 76.6394], // Erode
+    [8.0883, 77.5385],  // Kanyakumari
+    [11.9139, 79.8145], // Cuddalore
+    [10.0159, 77.4777], // Theni
+    [12.2340, 79.6550], // Villupuram
+    [11.3760, 76.7360], // Ooty
+    [9.3046, 79.3083],  // Ramanathapuram
+    [10.7654, 79.8428], // Thanjavur
+    [12.6304, 79.5366], // Chengalpattu
+    [11.1271, 78.6569], // Salem
+    [10.3639, 77.9705], // Dindigul
+    [9.1749, 77.8833],  // Tirunelveli
+    [12.8372, 79.7036], // Vellore
+    [11.4881, 77.8498], // Namakkal
+    [10.4480, 78.7455], // Karur
+    [9.5830, 78.4810],   // Sivaganga
+    [13.0827, 80.2707], // Chennai - Tamil Nadu
+    [11.0168, 76.9558], // Coimbatore - Tamil Nadu
+    [10.7905, 78.7047], // Trichy - Tamil Nadu
+    [9.9252, 78.1198],  // Madurai - Tamil Nadu
+    [12.2958, 76.6394], // Erode - Tamil Nadu
+    [8.0883, 77.5385],  // Kanyakumari - Tamil Nadu
+    [11.9139, 79.8145], // Cuddalore - Tamil Nadu
+    [10.0159, 77.4777], // Theni - Tamil Nadu
+    [12.2340, 79.6550], // Villupuram - Tamil Nadu
+    [11.3760, 76.7360], // Ooty - Tamil Nadu
+    [9.3046, 79.3083],  // Ramanathapuram - Tamil Nadu
+    [10.7654, 79.8428], // Thanjavur - Tamil Nadu
+    [12.6304, 79.5366], // Chengalpattu - Tamil Nadu
+    [11.1271, 78.6569], // Salem - Tamil Nadu
+    [10.3639, 77.9705], // Dindigul - Tamil Nadu
+    [9.1749, 77.8833],  // Tirunelveli - Tamil Nadu
+    [12.8372, 79.7036], // Vellore - Tamil Nadu
+    [11.4881, 77.8498], // Namakkal - Tamil Nadu
+    [10.4480, 78.7455], // Karur - Tamil Nadu
+    [9.5830, 78.4810],  // Sivaganga - Tamil Nadu
+    [9.9583, 77.5962],  // Kovilpatti - Tamil Nadu
+    [10.0303, 78.3852], // Pollachi - Tamil Nadu
+    [9.3675, 77.2023],  // Nagercoil - Tamil Nadu
+    [12.8331, 77.1782], // Hosur - Tamil Nadu
+    [10.4967, 78.2134], // Perambalur - Tamil Nadu
+    [9.8980, 78.5056],  // Thoothukudi - Tamil Nadu
+    [10.1580, 77.2301], // Pudukottai - Tamil Nadu
+    [10.9199, 78.8045], // Virudhunagar - Tamil Nadu
+    [9.4371, 77.5948],  // Tenkasi - Tamil Nadu
+    [12.0213, 77.6803], // Krishnagiri - Tamil Nadu
+    [9.8626, 79.3515],  // Kanchipuram - Tamil Nadu
+    [12.2581, 77.9479], // Dharmapuri - Tamil Nadu
+    [11.4436, 77.5136], // Tirupur - Tamil Nadu
+    [9.1221, 78.7163],  // Pudukottai - Tamil Nadu
+    [11.4875, 78.3500], // Omalur - Tamil Nadu
+    [12.3049, 77.6205], // Palani - Tamil Nadu
+    [11.2280, 77.7799], // Arakkonam - Tamil Nadu
+    [10.6912, 78.0819], // Karur - Tamil Nadu
+    [9.6839, 77.2787],  // Thirumangalam - Tamil Nadu
+    [12.2269, 79.8793], // Tiruvannamalai - Tamil Nadu
+    [10.7591, 77.4179], // Kodaikanal - Tamil Nadu
+    [9.9074, 77.5299],  // Srivilliputhur - Tamil Nadu
+    [10.3062, 77.3839], // Theni - Tamil Nadu
+    [11.3172, 78.8471], // Mettur - Tamil Nadu
+    [12.4184, 78.1712], // Chengalpet - Tamil Nadu
+    [10.5104, 77.0650], // Perundurai - Tamil Nadu
+    [9.4694, 77.7431],  // Adirampattinam - Tamil Nadu
+    [11.2180, 79.7284], // Kallakurichi - Tamil Nadu
+    [10.3417, 77.5057], // Udumalpet - Tamil Nadu
+    [12.0182, 79.9260], // Tirupur - Tamil Nadu
+    [9.7587, 77.8793],  // Rajapalayam - Tamil Nadu
+    [11.4269, 79.3805], // Krishnan Koil - Tamil Nadu
+    [9.6340, 78.7071],  // Natham - Tamil Nadu
+    [12.4866, 79.8582]  // Kancheepuram - Tamil Nadu
+];
+
+organicLocations.forEach((loc, index) => {
+    L.marker(loc, { icon: icons.organic }).addTo(organicLayer).bindPopup(`Organic Farming - Location ${index + 1}, Tamil Nadu`);
+});
+
+
+    // Rice Cultivation markers in Tamil Nadu
+const riceLocations = [
+  [22.5937, 85.9629], [25.5937, 88.9629], [21.9333, 86.7500], [20.5937, 87.9629], [23.3333, 88.3333],
+    [26.5937, 86.9630], [22.2569, 84.8754], [23.8103, 86.7111], [25.3960, 88.4228], [20.9837, 85.0945],
+
+    // Tamil Nadu Rice Cultivation Locations
+    [10.7654, 79.8428], // Thanjavur (Rice Bowl of Tamil Nadu)
+    [9.8252, 78.1198],  // Madurai
+    [11.1271, 78.6569], // Salem
+    [11.3760, 76.7360], // Ooty
+    [10.7905, 78.7047], // Trichy
+    [9.3046, 79.3083],  // Ramanathapuram
+    [12.8372, 79.7036], // Vellore
+    [10.0159, 77.4777], // Theni
+    [9.5830, 78.4810],  // Sivaganga
+    [10.3639, 77.9705], // Dindigul
+    [12.2958, 76.6394], // Erode
+    [11.4881, 77.8498], // Namakkal
+    [12.6304, 79.5366], // Chengalpattu
+    [8.0883, 77.5385],  // Kanyakumari
+    [10.4480, 78.7455], // Karur
+    [11.9139, 79.8145], // Cuddalore
+    [12.2340, 79.6550], // Villupuram
+    [9.1749, 77.8833],  // Tirunelveli
+    [10.9000, 79.8333], // Kumbakonam
+    [11.1000, 79.6500],  // Mayiladuthurai
+    [10.7654, 79.8428], // Thanjavur (Rice Bowl of Tamil Nadu)
+    [9.8252, 78.1198],  // Madurai - Tamil Nadu
+    [11.1271, 78.6569], // Salem - Tamil Nadu
+    [11.3760, 76.7360], // Ooty - Tamil Nadu
+    [10.7905, 78.7047], // Trichy - Tamil Nadu
+    [9.3046, 79.3083],  // Ramanathapuram - Tamil Nadu
+    [12.8372, 79.7036], // Vellore - Tamil Nadu
+    [10.0159, 77.4777], // Theni - Tamil Nadu
+    [9.5830, 78.4810],  // Sivaganga - Tamil Nadu
+    [10.3639, 77.9705], // Dindigul - Tamil Nadu
+    [12.2958, 76.6394], // Erode - Tamil Nadu
+    [11.4881, 77.8498], // Namakkal - Tamil Nadu
+    [12.6304, 79.5366], // Chengalpattu - Tamil Nadu
+    [8.0883, 77.5385],  // Kanyakumari - Tamil Nadu
+    [10.4480, 78.7455], // Karur - Tamil Nadu
+    [11.9139, 79.8145], // Cuddalore - Tamil Nadu
+    [12.2340, 79.6550], // Villupuram - Tamil Nadu
+    [9.1749, 77.8833],  // Tirunelveli - Tamil Nadu
+    [10.9000, 79.8333], // Kumbakonam - Tamil Nadu
+    [11.1000, 79.6500], // Mayiladuthurai - Tamil Nadu
+    [10.6154, 79.4036], // Thiruvarur - Tamil Nadu
+    [9.5633, 78.2295],  // Thoothukudi - Tamil Nadu
+    [9.7428, 78.1377],  // Alangulam - Tamil Nadu
+    [9.9486, 77.8691],  // Rajapalayam - Tamil Nadu
+    [11.5265, 79.1402], // Tiruvannamalai - Tamil Nadu
+    [12.3097, 77.5634], // Palani - Tamil Nadu
+    [10.7425, 79.3792], // Karaikal - Tamil Nadu
+    [10.9025, 78.3645], // Karur - Tamil Nadu
+    [12.0457, 79.4176], // Arakkonam - Tamil Nadu
+    [9.3926, 77.5825],  // Tenkasi - Tamil Nadu
+    [11.4175, 77.6123], // Mettur - Tamil Nadu
+    [9.8773, 77.7105],  // Thirumangalam - Tamil Nadu
+    [12.0622, 77.4237], // Hosur - Tamil Nadu
+    [9.4772, 77.4352],  // Madurai - Tamil Nadu
+    [12.4711, 77.6536], // Krishnagiri - Tamil Nadu
+    [9.7391, 77.4437],  // Kovilpatti - Tamil Nadu
+    [9.6267, 78.1291],  // Virudhunagar - Tamil Nadu
+    [12.1845, 79.4071], // Kanchipuram - Tamil Nadu
+    [11.7034, 77.3510], // Tirupur - Tamil Nadu
+    [10.1031, 77.6023], // Erode - Tamil Nadu
+    [11.0877, 78.1235], // Dharmapuri - Tamil Nadu
+    [9.3323, 78.7074],  // Nagercoil - Tamil Nadu
+    [10.5501, 77.7210], // Omalur - Tamil Nadu
+    [12.2530, 77.7284], // Krishnagiri - Tamil Nadu
+    [9.8012, 77.6549],  // Rameswaram - Tamil Nadu
+    [10.4183, 78.1912], // Udumalpet - Tamil Nadu
+    [9.7075, 77.8533],  // Sivakasi - Tamil Nadu
+    [12.4779, 77.6091], // Kolar - Tamil Nadu
+    [10.6893, 77.1325], // Pollachi - Tamil Nadu
+    [10.3003, 78.5469], // Trichy - Tamil Nadu
+    [10.2113, 79.2323], // Perambalur - Tamil Nadu
+    [9.2125, 77.2345],  // Tiruvarur - Tamil Nadu
+    [11.3193, 79.2735], // Viluppuram - Tamil Nadu
+    [10.1362, 78.6780], // Thanjavur - Tamil Nadu
+    [12.0276, 79.3174], // Vellore - Tamil Nadu
+    [9.2340, 77.6025],  // Tirunelveli - Tamil Nadu
+    [11.9202, 77.7489], // Kanchipuram - Tamil Nadu
+    [9.7151, 77.8847]   // Tuticorin - Tamil Nadu
+];
+
+riceLocations.forEach((loc, index) => {
+    L.marker(loc, { icon: icons.rice }).addTo(riceLayer).bindPopup(`Rice Cultivation - Location ${index + 1}, Tamil Nadu`);
+});
+
+// Wheat Farming markers in Tamil Nadu
+const wheatLocations = [
+  [24.5937, 75.9629], [26.5937, 72.9629], [23.6102, 85.2799], [27.2046, 73.0243], [26.1445, 75.5620],
+    [29.0657, 76.0406], [28.5355, 77.3910], [25.6102, 76.5301], [26.9124, 75.7873], [24.8771, 77.3465],
+
+    // Tamil Nadu Wheat Farming Locations
+    [11.0168, 76.9558], // Coimbatore
+    [10.7905, 78.7047], // Trichy
+    [9.9252, 78.1198],  // Madurai
+    [11.1271, 78.6569], // Salem
+    [10.7654, 79.8428], // Thanjavur
+    [12.2958, 76.6394], // Erode
+    [11.3760, 76.7360], // Ooty (Nilgiris - favorable for wheat)
+    [10.0159, 77.4777], // Theni
+    [12.6304, 79.5366], // Chengalpattu
+    [8.0883, 77.5385],  // Kanyakumari
+    [10.4480, 78.7455], // Karur
+    [11.9139, 79.8145], // Cuddalore
+    [12.2340, 79.6550], // Villupuram
+    [9.1749, 77.8833],  // Tirunelveli
+    [9.3046, 79.3083],  // Ramanathapuram
+    [11.1000, 79.6500], // Mayiladuthurai
+    [12.8372, 79.7036], // Vellore
+    [11.4881, 77.8498], // Namakkal
+    [10.3639, 77.9705], // Dindigul
+    [9.5830, 78.4810]   // Sivaganga
+
+
+
+    [11.0168, 76.9558], // Coimbatore - Tamil Nadu
+    [10.7905, 78.7047], // Trichy - Tamil Nadu
+    [9.9252, 78.1198],  // Madurai - Tamil Nadu
+    [11.1271, 78.6569], // Salem - Tamil Nadu
+    [10.7654, 79.8428], // Thanjavur - Tamil Nadu
+    [12.2958, 76.6394], // Erode - Tamil Nadu
+    [11.3760, 76.7360], // Ooty (Nilgiris - favorable for wheat) - Tamil Nadu
+    [10.0159, 77.4777], // Theni - Tamil Nadu
+    [12.6304, 79.5366], // Chengalpattu - Tamil Nadu
+    [8.0883, 77.5385],  // Kanyakumari - Tamil Nadu
+    [10.4480, 78.7455], // Karur - Tamil Nadu
+    [11.9139, 79.8145], // Cuddalore - Tamil Nadu
+    [12.2340, 79.6550], // Villupuram - Tamil Nadu
+    [9.1749, 77.8833],  // Tirunelveli - Tamil Nadu
+    [9.3046, 79.3083],  // Ramanathapuram - Tamil Nadu
+    [11.1000, 79.6500], // Mayiladuthurai - Tamil Nadu
+    [12.8372, 79.7036], // Vellore - Tamil Nadu
+    [11.4881, 77.8498], // Namakkal - Tamil Nadu
+    [10.3639, 77.9705], // Dindigul - Tamil Nadu
+    [9.5830, 78.4810],  // Sivaganga - Tamil Nadu
+    [12.5370, 77.9642], // Thiruvannamalai - Tamil Nadu
+    [9.9257, 77.7955],  // Tiruchendur - Tamil Nadu
+    [11.4317, 79.0712], // Dharmapuri - Tamil Nadu
+    [10.7402, 77.0769], // Pollachi - Tamil Nadu
+    [9.7442, 77.5566],  // Kovilpatti - Tamil Nadu
+    [12.0614, 79.2205], // Kanchipuram - Tamil Nadu
+    [10.1810, 77.4735], // Perambalur - Tamil Nadu
+    [9.3930, 77.5707],  // Tenkasi - Tamil Nadu
+    [12.2881, 77.7482], // Hosur - Tamil Nadu
+    [9.2746, 78.0143],  // Virudhunagar - Tamil Nadu
+    [12.3494, 78.1399], // Krishnagiri - Tamil Nadu
+    [10.9077, 78.5563], // Karur - Tamil Nadu
+    [10.6253, 79.4337], // Kumbakonam - Tamil Nadu
+    [9.4116, 77.4873],  // Rajapalayam - Tamil Nadu
+    [11.2014, 78.1035], // Tirupur - Tamil Nadu
+    [11.8043, 77.2610], // Salem - Tamil Nadu
+    [9.8312, 78.6823],  // Madurai - Tamil Nadu
+    [10.5237, 78.0272], // Manapparai - Tamil Nadu
+    [9.6462, 77.7036],  // Nagercoil - Tamil Nadu
+    [9.5097, 78.3962],  // Thoothukudi - Tamil Nadu
+    [12.3055, 79.7387], // Arakkonam - Tamil Nadu
+    [10.5423, 77.6350], // Omalur - Tamil Nadu
+    [10.7675, 79.3998], // Karaikal - Tamil Nadu
+    [12.0457, 77.7531], // Palani - Tamil Nadu
+    [9.8721, 77.2962],  // Tirunelveli - Tamil Nadu
+    [9.9493, 78.3021],  // Aruppukottai - Tamil Nadu
+    [11.3510, 78.4117], // Mettur - Tamil Nadu
+    [11.7618, 79.4029], // Chengalpattu - Tamil Nadu
+    [9.3170, 77.8919],  // Kovilpatti - Tamil Nadu
+    [12.3725, 77.4978], // Krishnagiri - Tamil Nadu
+    [10.6391, 78.0251], // Karur - Tamil Nadu
+    [9.9351, 77.7558],  // Sivakasi - Tamil Nadu
+    [10.0928, 77.5262], // Thoothukudi - Tamil Nadu
+    [10.3957, 78.3611], // Dindigul - Tamil Nadu
+    [9.5992, 77.4230],   // Virudhunagar - Tamil Nadu
+];
+
+wheatLocations.forEach((loc, index) => {
+    L.marker(loc, { icon: icons.wheat }).addTo(wheatLayer).bindPopup(`Wheat Farming - Location ${index + 1}, Tamil Nadu`);
+});
+
+   // Horticulture markers in Tamil Nadu
+const horticultureLocations = [
+   [21.5937, 79.9629], [19.5937, 77.9629], [18.5204, 73.8567], [16.7050, 75.2670], [20.9050, 75.8630],
+    [15.3173, 75.7139], [18.9878, 72.8365], [19.7515, 75.7139], [16.3734, 78.5041], [18.1124, 77.0241],
+
+    // Tamil Nadu Horticulture Locations
+    [11.4064, 76.6932], // Kotagiri (Nilgiris - tea, vegetables)
+    [11.3760, 76.7360], // Ooty (Nilgiris - tea, floriculture)
+    [10.0060, 77.0353], // Kodaikanal (fruits, flowers)
+    [11.0168, 76.9558], // Coimbatore (banana, flowers)
+    [10.7250, 79.1050], // Thiruvarur (mango, banana)
+    [10.7905, 78.7047], // Trichy (banana, guava)
+    [9.9252, 78.1198],  // Madurai (mango, jasmine)
+    [11.1271, 78.6569], // Salem (mango, tapioca)
+    [10.4480, 78.7455], // Karur (vegetables, flowers)
+    [12.6304, 79.5366], // Chengalpattu (cashew, guava)
+    [9.3046, 79.3083],  // Ramanathapuram (tropical fruits)
+    [8.0883, 77.5385],  // Kanyakumari (spices, banana)
+    [9.1749, 77.8833],  // Tirunelveli (banana, mango)
+    [10.0159, 77.4777], // Theni (grapes, mango)
+    [11.4881, 77.8498], // Namakkal (papaya, guava)
+    [12.8372, 79.7036], // Vellore (guava, jackfruit)
+    [11.9139, 79.8145], // Cuddalore (cashew, jackfruit)
+    [12.2958, 76.6394], // Erode (turmeric, banana)
+    [10.9000, 79.8333], // Kumbakonam (betel leaves, banana)
+    [11.1000, 79.6500]  // Mayiladuthurai (coconut, mango)
+    [11.4064, 76.6932], // Kotagiri (Nilgiris - tea, vegetables) - Tamil Nadu
+    [11.3760, 76.7360], // Ooty (Nilgiris - tea, floriculture) - Tamil Nadu
+    [10.0060, 77.0353], // Kodaikanal (fruits, flowers) - Tamil Nadu
+    [11.0168, 76.9558], // Coimbatore (banana, flowers) - Tamil Nadu
+    [10.7250, 79.1050], // Thiruvarur (mango, banana) - Tamil Nadu
+    [10.7905, 78.7047], // Trichy (banana, guava) - Tamil Nadu
+    [9.9252, 78.1198],  // Madurai (mango, jasmine) - Tamil Nadu
+    [11.1271, 78.6569], // Salem (mango, tapioca) - Tamil Nadu
+    [10.4480, 78.7455], // Karur (vegetables, flowers) - Tamil Nadu
+    [12.6304, 79.5366], // Chengalpattu (cashew, guava) - Tamil Nadu
+    [9.3046, 79.3083],  // Ramanathapuram (tropical fruits) - Tamil Nadu
+    [8.0883, 77.5385],  // Kanyakumari (spices, banana) - Tamil Nadu
+    [9.1749, 77.8833],  // Tirunelveli (banana, mango) - Tamil Nadu
+    [10.0159, 77.4777], // Theni (grapes, mango) - Tamil Nadu
+    [11.4881, 77.8498], // Namakkal (papaya, guava) - Tamil Nadu
+    [12.8372, 79.7036], // Vellore (guava, jackfruit) - Tamil Nadu
+    [11.9139, 79.8145], // Cuddalore (cashew, jackfruit) - Tamil Nadu
+    [12.2958, 76.6394], // Erode (turmeric, banana) - Tamil Nadu
+    [10.9000, 79.8333], // Kumbakonam (betel leaves, banana) - Tamil Nadu
+    [11.1000, 79.6500], // Mayiladuthurai (coconut, mango) - Tamil Nadu
+    [12.5370, 77.9642], // Thiruvannamalai (fruit, vegetable) - Tamil Nadu
+    [10.7402, 77.0769], // Pollachi (vegetables, flowers) - Tamil Nadu
+    [9.7442, 77.5566],  // Kovilpatti (tropical fruits) - Tamil Nadu
+    [11.4317, 79.0712], // Dharmapuri (guava, tamarind) - Tamil Nadu
+    [10.7675, 79.3998], // Karaikal (tropical fruits, vegetables) - Tamil Nadu
+    [12.0614, 79.2205], // Kanchipuram (coconut, banana) - Tamil Nadu
+    [9.3930, 77.5707],  // Tenkasi (banana, coconut) - Tamil Nadu
+    [10.5237, 78.0272], // Manapparai (vegetables, banana) - Tamil Nadu
+    [9.6462, 77.7036],  // Nagercoil (banana, fruits) - Tamil Nadu
+    [9.5097, 78.3962],  // Thoothukudi (spices, banana) - Tamil Nadu
+    [12.3055, 77.7482], // Hosur (vegetables, fruits) - Tamil Nadu
+    [9.2746, 78.0143],  // Virudhunagar (tropical fruits) - Tamil Nadu
+    [12.3494, 78.1399], // Krishnagiri (banana, guava) - Tamil Nadu
+    [10.9077, 78.5563], // Karur (tropical fruits, flowers) - Tamil Nadu
+    [10.6253, 79.4337], // Kumbakonam (mango, guava) - Tamil Nadu
+    [9.4116, 77.4873],  // Rajapalayam (mango, banana) - Tamil Nadu
+    [11.2014, 78.1035], // Tirupur (cotton, vegetables) - Tamil Nadu
+    [11.8043, 77.2610], // Salem (fruits, flowers) - Tamil Nadu
+    [9.8312, 78.6823],  // Madurai (banana, flowers) - Tamil Nadu
+    [10.5237, 78.0272], // Manapparai (vegetables, flowers) - Tamil Nadu
+    [9.5097, 78.3962],  // Thoothukudi (spices, banana) - Tamil Nadu
+    [10.0447, 78.7789], // Theni (grapes, vegetables) - Tamil Nadu
+    [9.9173, 77.7779],  // Ramanathapuram (mango, vegetables) - Tamil Nadu
+    [11.4117, 77.1034], // Erode (guava, flowers) - Tamil Nadu
+    [11.9511, 78.3020], // Karur (vegetables, spices) - Tamil Nadu
+    [12.3725, 77.4978], // Krishnagiri (fruits, flowers) - Tamil Nadu
+    [9.7748, 77.4047],  // Tirunelveli (guava, banana) - Tamil Nadu
+    [9.7431, 77.8520],  // Kovilpatti (fruits, vegetables) - Tamil Nadu
+    [10.1914, 77.4874], // Perambalur (fruits, vegetables) - Tamil Nadu
+    [10.4174, 77.6487], // Kanyakumari (vegetables, spices) - Tamil Nadu
+    [11.6185, 78.5478], // Dharmapuri (flowers, fruits) - Tamil Nadu
+    [9.8202, 77.7282],  // Madurai (spices, guava) - Tamil Nadu
+    [11.5567, 78.4220], // Vellore (fruits, vegetables) - Tamil Nadu
+    [12.4161, 77.3922], // Krishnagiri (fruits, vegetables) - Tamil Nadu
+    [9.2345, 77.4801]   // Thoothukudi (spices, tropical fruits) - Tamil Nadu
+];
+
+horticultureLocations.forEach((loc, index) => {
+    L.marker(loc, { icon: icons.horticulture }).addTo(horticultureLayer).bindPopup(`Horticulture - Location ${index + 1}, Tamil Nadu`);
+});
+
+ // Function to highlight the selected agriculture type
+    function highlightAgricultureType() {
+        const selectedType = document.getElementById('agriculture-type').value;
+
+        // Clear all layers before adding new ones
+        map.eachLayer(layer => {
+            if (layer instanceof L.LayerGroup) {
+                layer.clearLayers();
+            }
+        });
+
+       // Display the selected agriculture type
+if (selectedType === 'organic') {
+    organicLayer.addTo(map);
+} else if (selectedType === 'rice') {
+    riceLayer.addTo(map);
+} else if (selectedType === 'wheat') {
+    wheatLayer.addTo(map);
+} else if (selectedType === 'horticulture') {
+    horticultureLayer.addTo(map);
+}
+}
+
+
+        // Function to add notifications
+        function addNotification() {
+            const title = document.getElementById('notification-title').value;
+            const content = document.getElementById('notification-content').value;
+            const notificationList = document.getElementById('notification-list');
+
+            if (title && content) {
+                const notificationDiv = document.createElement('div');
+                notificationDiv.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
+                notificationList.prepend(notificationDiv);
+
+                // Clear input fields after adding
+                document.getElementById('notification-title').value = '';
+                document.getElementById('notification-content').value = '';
+            } else {
+                alert('Please enter both title and content.');
+            }
+        }
+    </script>
+    
+    <a href="javascript:void(0);" onclick="goBack()" class="back-button">Back</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</body>
+
+</html>
+  
